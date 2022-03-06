@@ -1,0 +1,21 @@
+[debug] [2022-03-04T12:17:34.147Z] ----------------------------------------------------------------------
+[debug] [2022-03-04T12:17:34.150Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\admir\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js init
+[debug] [2022-03-04T12:17:34.151Z] CLI Version:   10.2.2
+[debug] [2022-03-04T12:17:34.151Z] Platform:      win32
+[debug] [2022-03-04T12:17:34.151Z] Node Version:  v16.14.0
+[debug] [2022-03-04T12:17:34.153Z] Time:          Fri Mar 04 2022 13:17:34 GMT+0100 (sentraleuropeisk normaltid)
+[debug] [2022-03-04T12:17:34.153Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2022-03-04T12:17:34.164Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2022-03-04T12:17:34.165Z] > authorizing via signed-in user (admir.norway@gmail.com)
+[info] 
+     ######## #### ########  ######## ########     ###     ######  ########
+     ##        ##  ##     ## ##       ##     ##  ##   ##  ##       ##
+     ######    ##  ########  ######   ########  #########  ######  ######
+     ##        ##  ##    ##  ##       ##     ## ##     ##       ## ##
+     ##       #### ##     ## ######## ########  ##     ##  ######  ########
+
+You're about to initialize a Firebase project in this directory:
+
+  C:\Users\admir\ikt205\habit-tracker
+
