@@ -10,6 +10,9 @@ import {
 import React, { useState } from "react";
 import { auth } from "../../firebase-config";
 import { createUserWithEmailAndPassword } from "firebase/auth";
+import { StatusBar } from "expo-status-bar";
+
+import styles from "./AuthScreensStyle";
 
 export default function RegisterScreen({ navigation }) {
   const [email, setEmail] = useState("");
@@ -33,6 +36,11 @@ export default function RegisterScreen({ navigation }) {
 
   return (
     <View style={styles.container}>
+      <StatusBar style="auto" />
+      <Image
+        style={styles.img}
+        source={require("../../config/images/app-logo.png")}
+      />
       <View style={styles.InputView}>
         <TextInput
           style={styles.TextInput}
@@ -61,47 +69,15 @@ export default function RegisterScreen({ navigation }) {
           }
         />
       </View>
-      <TouchableOpacity onPress={handleRegister} style={styles.loginBtn}>
+      <TouchableOpacity onPress={handleRegister} style={styles.btn}>
         <Text>Register</Text>
       </TouchableOpacity>
       <TouchableOpacity
-        style={styles.loginBtn}
+        style={styles.btn}
         onPress={() => navigation.navigate("Login")}
       >
-        <Text>Have an account? Log in</Text>
+        <Text style={styles.btnText}>Have an account? Log in</Text>
       </TouchableOpacity>
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  InputView: {
-    backgroundColor: "#FFC0CB",
-    borderRadius: 30,
-    width: "70%",
-    height: 45,
-    marginBottom: 20,
-  },
-  TextInput: {
-    height: 50,
-    padding: 10,
-    marginLeft: 20,
-    textAlign: "center",
-  },
-  loginBtn: {
-    width: "40%",
-    borderRadius: 25,
-    alignItems: "center",
-    justifyContent: "center",
-    marginTop: 10,
-    padding: 10,
-    backgroundColor: "#FF1493",
-    marginBottom: 10,
-  },
-});
