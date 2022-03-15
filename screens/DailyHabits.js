@@ -2,14 +2,17 @@ import { StatusBar } from "expo-status-bar";
 import React, { useEffect, useState } from "react";
 import { Text, View, Button, FlatList } from "react-native";
 
-import styles from "./HabitsStyle";
+import styles from "./DailyHabitsStyle";
 
-import db from "../firebase-config";
+import { db } from "../firebase-config";
 import { collection, getDocs } from "firebase/firestore";
+
+import { signOut } from "firebase/auth";
+import { auth } from "../firebase-config";
 
 import HabitItem from "../components/HabitItem";
 
-const Habits = () => {
+const DailyHabits = () => {
   // bytt "dailyspending" til "habits"
   const habitsCollectionRef = collection(db, "habits");
 
@@ -27,6 +30,18 @@ const Habits = () => {
   return (
     <View style={styles.container}>
       <Text style={styles.header}>Your habits</Text>
+      <Button
+        title="Log out"
+        onPress={() =>
+          signOut(auth)
+            .then(() => {
+              /* Sign-out successful */
+            })
+            .catch((error) => {
+              // An error happened
+            })
+        }
+      />
       <StatusBar style="auto" />
       <FlatList
         style={{ width: "100%" }}
@@ -37,4 +52,4 @@ const Habits = () => {
   );
 };
 
-export default Habits;
+export default DailyHabits;

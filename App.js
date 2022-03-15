@@ -1,36 +1,38 @@
 import React from "react";
-import { StyleSheet } from "react-native";
 
-// screen management
-import { NavigationContainer } from "@react-navigation/native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
-
-const Stack = createNativeStackNavigator();
+import { createAppContainer, createSwitchNavigator } from "react-navigation";
+import { createStackNavigator } from "react-navigation-stack";
+import LoadingScreen from "./screens/LoadingScreen";
+import AllHabits from "./screens/AllHabits";
+import DailyHabits from "./screens/DailyHabits";
+import LoginScreen from "./screens/auth/LoginScreen";
+import RegisterScreen from "./screens/auth/RegisterScreen";
 
 // icons
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { faT, faF, faCircle } from "@fortawesome/free-solid-svg-icons";
+import { View } from "react-native-web";
 library.add(faT, faF, faCircle);
 
-// screens
-import Habits from "./screens/Habits";
-import CreateHabit from "./screens/CreateHabit";
+const AppStack = createStackNavigator({
+  DailyHabits: DailyHabits,
+  AllHabits: AllHabits,
+});
 
-export default function App() {
-  return (
-    <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen
-          name="Habits"
-          component={Habits}
-          options={{ title: "Habits screen" }}
-        />
-        <Stack.Screen
-          name="CreateHabit"
-          component={CreateHabit}
-          options={{ title: "Create habit screen" }}
-        />
-      </Stack.Navigator>
-    </NavigationContainer>
-  );
-}
+const AuthStack = createStackNavigator({
+  Login: LoginScreen,
+  Register: RegisterScreen,
+});
+
+export default createAppContainer(
+  createSwitchNavigator(
+    {
+      Loading: LoadingScreen,
+      App: AppStack,
+      Auth: AuthStack,
+    },
+    {
+      initialRouteName: "Loading",
+    }
+  )
+);
