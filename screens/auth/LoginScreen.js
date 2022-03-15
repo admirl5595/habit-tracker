@@ -33,6 +33,7 @@ export default function LoginScreen({ navigation }) {
   return (
     <View style={styles.container}>
       <StatusBar style="auto" />
+
       <Image
         style={styles.img}
         source={require("../../config/images/app-logo.png")}
