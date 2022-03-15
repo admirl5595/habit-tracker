@@ -8,18 +8,29 @@ import {
   Dimensions,
 } from "react-native";
 import React, { useState } from "react";
-import { useNavigation } from "@react-navigation/native";
+import { auth } from "../../firebase-config";
+import { signInWithEmailAndPassword } from "firebase/auth";
+
 const win = Dimensions.get("window");
 
-
-export default function LoginScreen() {
+export default function LoginScreen({ navigation }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const navigation = useNavigation;
+
+  const handleLogin = () => {
+    signInWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        const user = userCredential.user;
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        console.log(errorCode);
+      });
+  };
 
   return (
-    <View styles={styles.container}>
-      <Image source={require("../assets/Logo.png")} style={styles.Logo}></Image>
+    <View style={styles.container}>
       <View style={styles.InputView}>
         <TextInput
           style={styles.TextInput}
@@ -38,10 +49,13 @@ export default function LoginScreen() {
         />
       </View>
 
-      <TouchableOpacity style={styles.loginBtn}>
-        <Text>LOGIN</Text>
+      <TouchableOpacity onPress={handleLogin} style={styles.loginBtn}>
+        <Text>Login</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.regBtn} onPress={() => navigation.navigate("Register")}>
+      <TouchableOpacity
+        style={styles.loginBtn}
+        onPress={() => navigation.navigate("Register")}
+      >
         <Text>Register</Text>
       </TouchableOpacity>
     </View>
@@ -49,7 +63,7 @@ export default function LoginScreen() {
 }
 
 const styles = StyleSheet.create({
-    container: {
+  container: {
     flex: 1,
     backgroundColor: "#fff",
     alignItems: "center",
@@ -61,34 +75,21 @@ const styles = StyleSheet.create({
     width: "70%",
     height: 45,
     marginBottom: 20,
-    alignItems: "center",
   },
-
   TextInput: {
     height: 50,
-    flex: 1,
     padding: 10,
     marginLeft: 20,
     textAlign: "center",
   },
-
   loginBtn: {
     width: "40%",
     borderRadius: 25,
-    height: 50,
     alignItems: "center",
     justifyContent: "center",
-    marginTop: 40,
+    marginTop: 10,
+    padding: 10,
     backgroundColor: "#FF1493",
-    marginBottom: 30,
-  },
-
-  Logo: {
-    marginTop: -80,
-    marginBottom: 40,
-    width: win.width / 1.3,
-    height: win.width / 1.3,
-    resizeMode: "contain",
-    alignSelf: "center",
+    marginBottom: 10,
   },
 });

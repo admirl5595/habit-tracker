@@ -4,8 +4,11 @@ import { Text, View, Button, FlatList } from "react-native";
 
 import styles from "./DailyHabitsStyle";
 
-import db from "../firebase-config";
+import { db } from "../firebase-config";
 import { collection, getDocs } from "firebase/firestore";
+
+import { signOut } from "firebase/auth";
+import { auth } from "../firebase-config";
 
 import HabitItem from "../components/HabitItem";
 
@@ -27,6 +30,18 @@ const DailyHabits = () => {
   return (
     <View style={styles.container}>
       <Text style={styles.header}>Your habits</Text>
+      <Button
+        title="Log out"
+        onPress={() =>
+          signOut(auth)
+            .then(() => {
+              /* Sign-out successful */
+            })
+            .catch((error) => {
+              // An error happened
+            })
+        }
+      />
       <StatusBar style="auto" />
       <FlatList
         style={{ width: "100%" }}

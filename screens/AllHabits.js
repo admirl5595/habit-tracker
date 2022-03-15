@@ -7,7 +7,7 @@ import styles from "./AllHabitsStyle";
 const AllHabits = () => {
   return (
     <View style={styles.container}>
-      <Text>Create a habit</Text>
+      <Text>All habits</Text>
     </View>
   );
 };

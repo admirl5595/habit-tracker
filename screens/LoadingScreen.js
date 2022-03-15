@@ -1,19 +1,22 @@
-import react, {useEffect} from "react";
-import { StyleSheet, Text, View } from "react-native";
-import auth from '@react-native-firebase/auth';
-import AppNavigator from "../config/AppNavigator";
-import AuthNavigator from "../config/AuthNavigator";
+import React from "react";
+import { View, Text, StyleSheet, ActivityIndicator } from "react-native";
 
-export default function LoadingScreen() {
+import { onAuthStateChanged } from "firebase/auth";
+import { auth } from "../firebase-config";
 
-  useEffect(() => { 
-    auth().onAuthStateChanged(user => {
-      if (user) {
-        return <AppNavigator/>
-      }
-      else {
-        return <AuthNavigator/>
-      }
-    })
-  }, [])
+export default class LoadingScreen extends React.Component {
+  componentDidMount() {
+    onAuthStateChanged(auth, (user) =>
+      this.props.navigation.navigate(user ? "App" : "Auth")
+    );
+  }
+
+  render() {
+    return (
+      <View>
+        <Text>Loading...</Text>
+        <ActivityIndicator size="large" />
+      </View>
+    );
+  }
 }
