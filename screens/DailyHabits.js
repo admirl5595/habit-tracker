@@ -2,14 +2,14 @@ import { StatusBar } from "expo-status-bar";
 import React, { useEffect, useState } from "react";
 import { Text, View, Button, FlatList } from "react-native";
 
-import styles from "./HabitsStyle";
+import styles from "./DailyHabitsStyle";
 
 import db from "../firebase-config";
 import { collection, getDocs } from "firebase/firestore";
 
 import HabitItem from "../components/HabitItem";
 
-const Habits = () => {
+const DailyHabits = () => {
   // bytt "dailyspending" til "habits"
   const habitsCollectionRef = collection(db, "habits");
 
@@ -37,4 +37,4 @@ const Habits = () => {
   );
 };
 
-export default Habits;
+export default DailyHabits;
