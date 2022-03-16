@@ -1,14 +1,13 @@
 import React from "react";
 
-import { View, Text } from "react-native";
+import { Text } from "react-native";
+import Layout from "./Layout";
 
-import styles from "./AllHabitsStyle";
-
-const AllHabits = () => {
+const AllHabits = ({navigation}) => {
   return (
-    <View style={styles.container}>
-      <Text>All habits</Text>
-    </View>
+    <Layout navigation={navigation}>
+      <Text>All habits</Text>     
+    </Layout>
   );
 };
 
