@@ -12,7 +12,9 @@ import { auth } from "../firebase-config";
 
 import HabitItem from "../components/HabitItem";
 
-const DailyHabits = () => {
+import Layout from "./Layout";
+
+const DailyHabits = ({navigation}) => {
   // bytt "dailyspending" til "habits"
   const habitsCollectionRef = collection(db, "habits");
 
@@ -28,7 +30,8 @@ const DailyHabits = () => {
   }, []);
 
   return (
-    <View style={styles.container}>
+    <Layout navigation={navigation}>
+      <View style={styles.container}>
       <Text style={styles.header}>Your habits</Text>
       <Button
         title="Log out"
@@ -49,6 +52,8 @@ const DailyHabits = () => {
         renderItem={({ item }) => <HabitItem item={item} />}
       />
     </View>
+    </Layout>
+    
   );
 };
 
