@@ -12,6 +12,9 @@ import { auth } from "../../firebase-config";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { StatusBar } from "expo-status-bar";
 
+import { db } from "../../firebase-config";
+import { doc, setDoc } from "firebase/firestore";
+
 import styles from "./AuthScreensStyle";
 
 export default function RegisterScreen({ navigation }) {
@@ -21,11 +24,17 @@ export default function RegisterScreen({ navigation }) {
 
   const handleRegister = () => {
     createUserWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        console.log(userCredential);
-        return userCredential.user.updateProfile({
-          displayName: email,
-        });
+      .then(() => {
+        // get user information
+        const user = auth.currentUser;
+
+        // store habits and user id in user collection
+        const userData = {
+          uid: user.uid,
+        };
+
+        // create new document in users collection with user id as name
+        setDoc(doc(db, "users", user.uid), userData);
       })
       .catch((error) => {
         const errorCode = error.code;
@@ -37,7 +46,6 @@ export default function RegisterScreen({ navigation }) {
   return (
     <View style={styles.container}>
       <StatusBar style="auto" />
-
       <Image
         style={styles.img}
         source={require("../../config/images/app-logo.png")}
