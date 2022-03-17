@@ -4,13 +4,13 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
-    backgroundColor: "rgba(241,229,138,1)",
   },
 
   header: {
     fontSize: 50,
     marginTop: "10%",
-    color: "#fff",
+    color: "#000",
+    fontWeight: "800",
   },
 });
 
