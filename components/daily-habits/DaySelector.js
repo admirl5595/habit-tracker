@@ -25,10 +25,10 @@ const DaySelector = ({ selectedDay, setSelectedDay }) => {
 
   // show 7 days from today (day = friday, saturday, sunday, ..., thursday)
 
-  let part1 = days.splice(dayNum-1, dayNum )
-  let part2 = days.splice(0, dayNum- 1 )
+  let part1 = days.splice(dayNum - 1, dayNum);
+  let part2 = days.splice(0, dayNum - 1);
 
-  days = [...part1, ...part2]
+  days = [...part1, ...part2];
 
   return (
     <View style={styles.container}>

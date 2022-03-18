@@ -12,7 +12,6 @@ import { auth } from "../../firebase-config";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { StatusBar } from "expo-status-bar";
 
-
 import styles from "./AuthScreensStyle";
 
 export default function LoginScreen({ navigation }) {
@@ -64,7 +63,7 @@ export default function LoginScreen({ navigation }) {
         style={styles.btn}
         onPress={() => navigation.navigate("Register")}
       >
-        <Text style={styles.btnText}>Dont't have an account? Login</Text>
+        <Text style={styles.btnText}>Don't have an account? Login</Text>
       </TouchableOpacity>
     </View>
   );
