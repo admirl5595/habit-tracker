@@ -12,6 +12,7 @@ import { auth } from "../../firebase-config";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { StatusBar } from "expo-status-bar";
 
+
 import styles from "./AuthScreensStyle";
 
 export default function LoginScreen({ navigation }) {

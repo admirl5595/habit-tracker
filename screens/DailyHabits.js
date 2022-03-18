@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Text, View, Button, FlatList } from "react-native";
+import { Text, View, Button, FlatList, ActivityIndicator } from "react-native";
 
 import styles from "./DailyHabitsStyle";
 
@@ -22,6 +22,7 @@ import DaySelector from "../components/daily-habits/DaySelector";
 import Layout from "./Layout";
 
 const DailyHabits = ({ navigation }) => {
+
   // current user
   const user = auth.currentUser;
 
@@ -31,20 +32,22 @@ const DailyHabits = ({ navigation }) => {
   // get user's habits collection (users/userId/habits)
   const userHabitCollectionRef = collection(db, "users", user.uid, "habits");
 
+
+  // loading state
+  const [isLoading, setIsLoading] = useState(false)
   const [habitsData, setHabitsData] = useState([]);
 
-  // monday returns 0 etc.
+  // monday returns 1 etc.
   const dayNum = new Date().getDay();
   const days = {
-    0: "monday",
-    1: "tuesday",
-    2: "wednesday",
-    3: "thursday",
-    4: "friday",
-    5: "saturday",
-    6: "sunday",
+    1: "monday",
+    2: "tuesday",
+    3: "wednesday",
+    4: "thursday",
+    5: "friday",
+    6: "saturday",
+    7: "sunday",
   };
-
   // set day string using corresponding day number
   const [selectedDay, setSelectedDay] = useState(days[dayNum]);
 
@@ -68,7 +71,12 @@ const DailyHabits = ({ navigation }) => {
 
   // get habit documents
   const getHabits = async () => {
+
+    setIsLoading(true)
+
     const userHabits = await getDocs(userHabitCollectionRef);
+
+    setIsLoading(false)
 
     setHabitsData(
       userHabits.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
@@ -77,12 +85,13 @@ const DailyHabits = ({ navigation }) => {
 
   // temporary create function
   const addHabit = async () => {
+    setIsLoading(true)
     const dummyHabit = {
-      name: "Go fishin'",
+      name: "Go running 2",
       completedDays: [true, true, false, false],
-      color: "rgba(235,169,95,1)",
-      icon: "fish-fins", // fontawesome icon
-      dayOfWeek: [false, false, false, false, true, true, true],
+      color: "green",
+      icon: "person-running", // fontawesome icon
+      dayOfWeek: [false, false, false, true, true, true, true],
     };
     // adds document to user's habit collection (autoId)
     await addDoc(userHabitCollectionRef, dummyHabit);
@@ -108,6 +117,7 @@ const DailyHabits = ({ navigation }) => {
 
   return (
     <Layout navigation={navigation}>
+     
       <DaySelector
         selectedDay={selectedDay}
         setSelectedDay={(day) => setSelectedDay(day)}
