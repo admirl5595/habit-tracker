@@ -2,16 +2,21 @@ import { StyleSheet } from "react-native";
 
 const styles = StyleSheet.create({
   habitContainer: {
-    backgroundColor: "rgba(240,240,240,1)",
     marginVertical: 10,
-    padding: 30,
-    borderRadius: 30,
+    padding: 20,
+    borderRadius: 15,
     elevation: 3,
     margin: 10,
+    flexDirection: "row",
+    alignItems: "center",
   },
   habitHeader: {
-    fontSize: 25,
-    marginBottom: 10,
+    fontSize: 35,
+    marginLeft: 20,
+    flex: 1,
+  },
+  removeBtn: {
+    color: "rgba(255,50,50,1)",
   },
 });
 

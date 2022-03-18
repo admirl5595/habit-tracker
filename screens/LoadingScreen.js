@@ -4,19 +4,26 @@ import { View, Text, StyleSheet, ActivityIndicator } from "react-native";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../firebase-config";
 
-export default class LoadingScreen extends React.Component {
-  componentDidMount() {
-    onAuthStateChanged(auth, (user) =>
-      this.props.navigation.navigate(user ? "App" : "Auth")
-    );
-  }
+import { primaryColor } from "../config/theme/styles";
 
+export default class LoadingScreen extends React.Component {
   render() {
     return (
-      <View>
-        <Text>Loading...</Text>
-        <ActivityIndicator size="large" />
+      <View style={styles.container}>
+        <Text style={styles.header}>Loading</Text>
+        <ActivityIndicator color={primaryColor} size="large" />
       </View>
     );
   }
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  header: {
+    fontSize: 30,
+  },
+});

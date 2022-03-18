@@ -1,12 +1,20 @@
-import React from "react";
+import React, { useContext } from "react";
 
 import { Text } from "react-native";
 import Layout from "./Layout";
 
-const AllHabits = ({navigation}) => {
+import HabitsContext from "../config/HabitsContext";
+
+const AllHabits = ({ navigation }) => {
+  // use context
+  const { habits, setHabits } = useContext(HabitsContext);
+
   return (
     <Layout navigation={navigation}>
-      <Text>All habits</Text>     
+      <Text>All habits</Text>
+      {habits.map((habit) => (
+        <Text key={habit.id}>{habit.name}</Text>
+      ))}
     </Layout>
   );
 };
