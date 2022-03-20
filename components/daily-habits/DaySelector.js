@@ -10,23 +10,25 @@ const DaySelector = ({ selectedDay, setSelectedDay }) => {
   const backgroundColor = primaryColor;
 
   // monday returns 0 etc.
-  const dayNum = new Date().getDay();
+  let dayNum = new Date().getDay();
 
   // days of week
   let days = [
+    "sunday",
     "monday",
     "tuesday",
     "wednesday",
     "thursday",
     "friday",
     "saturday",
-    "sunday",
   ];
 
   // show 7 days from today (day = friday, saturday, sunday, ..., thursday)
 
-  let part1 = days.splice(dayNum - 1, dayNum);
-  let part2 = days.splice(0, dayNum - 1);
+  // note: sunday has index 0, saturday has index 6
+
+  let part1 = days.splice(dayNum, days.length - dayNum);
+  let part2 = days.splice(0, dayNum);
 
   days = [...part1, ...part2];
 

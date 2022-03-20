@@ -6,8 +6,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 const NoHabits = () => {
   return (
     <View style={styles.container}>
-      <Text style={styles.header}>No habits</Text>
-
+      <Text style={styles.header}>No habits!</Text>
       <FontAwesomeIcon color="lightblue" size={200} icon="face-grin-tears" />
     </View>
   );

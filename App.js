@@ -79,7 +79,9 @@ const App = () => {
   // listen to user authentication state
   const [user, loading, error] = useAuthState(auth);
 
-  const [habits, setHabits] = useState(null);
+  const [habits, setHabits] = useState([]);
+
+  console.log("context changed");
 
   // conditional rendering of screens
   return (

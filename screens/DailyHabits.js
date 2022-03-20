@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from "react";
-import { View, Button, FlatList } from "react-native";
+import { View, Button, FlatList, ActivityIndicator } from "react-native";
 
 import styles from "./DailyHabitsStyle";
 
@@ -29,19 +29,22 @@ const DailyHabits = ({ navigation }) => {
   // get user's habits collection (users/userId/habits)
   const userHabitCollectionRef = collection(db, "users", user.uid, "habits");
 
-  // monday returns 1 etc.
+  // monday returns 0 for sunday etc.
   const dayNum = new Date().getDay();
-  const days = {
+  let days = {
     1: "monday",
     2: "tuesday",
     3: "wednesday",
     4: "thursday",
     5: "friday",
     6: "saturday",
-    7: "sunday",
+    0: "sunday",
   };
+
   // set day string using corresponding day number
   const [selectedDay, setSelectedDay] = useState(days[dayNum]);
+
+  const [isLoading, setIsLoading] = useState(true);
 
   // habits filtered by day selector
   const [displayHabits, setDisplayHabits] = useState([]);
@@ -52,14 +55,24 @@ const DailyHabits = ({ navigation }) => {
 
     const habitsCopy = [...habits];
 
+    // note: change dayOfWeek to list of days
+    let days = {
+      0: "monday",
+      1: "tuesday",
+      2: "wednesday",
+      3: "thursday",
+      4: "friday",
+      5: "saturday",
+      6: "sunday",
+    };
+
     // return list of habits
     const newDisplayHabits = habitsCopy.filter(
       (habit) =>
         habit.dayOfWeek.filter(
-          (dayBool, index) => days[index + 1] === selectedDay && dayBool
+          (dayBool, index) => days[index] === selectedDay && dayBool
         ).length !== 0
     );
-
     setDisplayHabits(newDisplayHabits);
   };
 
@@ -67,11 +80,9 @@ const DailyHabits = ({ navigation }) => {
   const getHabits = async () => {
     const userHabits = await getDocs(userHabitCollectionRef);
 
-    if (userHabits) {
-      setHabits(userHabits.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
-    } else {
-      console.log("no habits");
-    }
+    setHabits(userHabits.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+
+    setIsLoading(false);
   };
 
   // remove habit by id
@@ -110,20 +121,17 @@ const DailyHabits = ({ navigation }) => {
               })
           }
         />
-        {habits ? (
-          habits.length !== 0 ? (
-            <FlatList
-              style={{ width: "100%" }}
-              data={displayHabits}
-              renderItem={({ item }) => (
-                <HabitItem removeHabit={(id) => removeHabit(id)} item={item} />
-              )}
-            />
-          ) : (
-            <NoHabits />
-          )
-        ) : (
+        {isLoading ? <ActivityIndicator size="large" color="#000" /> : null}
+        {displayHabits.length === 0 && !isLoading ? (
           <NoHabits />
+        ) : (
+          <FlatList
+            style={{ width: "100%" }}
+            data={displayHabits}
+            renderItem={({ item }) => (
+              <HabitItem removeHabit={(id) => removeHabit(id)} item={item} />
+            )}
+          />
         )}
       </View>
     </Layout>
