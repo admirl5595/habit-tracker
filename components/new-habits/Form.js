@@ -173,6 +173,7 @@ const Form = ({ onSubmit, habitInfo }) => {
         >
           {icons.map((iconOption) => (
             <TouchableOpacity
+              key={iconOption}
               style={[styles.icon]}
               onPress={() => setIcon(iconOption)}
             >
@@ -196,6 +197,7 @@ const Form = ({ onSubmit, habitInfo }) => {
         <View style={styles.colorSelectorContainer}>
           {colors.map((colorOption) => (
             <TouchableOpacity
+              key={colorOption}
               style={[styles.colorSelector, { backgroundColor: colorOption }]}
               onPress={() => setColor(colorOption)}
             >
