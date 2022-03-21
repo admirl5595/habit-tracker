@@ -23,7 +23,8 @@ import styles from "./FormStyles";
 
 // onSubmit: either create or edit habit
 // habitInfor: previous habit info (null when creating a new one)
-const Form = ({ onSubmit, habitInfo, type }) => {
+
+const Form = ({ onSubmit, habitInfo }) => {
   const [errorMessage, setErrorMessage] = useState("");
 
   // habit name
