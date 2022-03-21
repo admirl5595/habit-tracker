@@ -1,6 +1,7 @@
 import React, { useContext } from "react";
 import { View, Text, Button } from "react-native";
 import Layout from "./Layout";
+import Form from "../components/new-habits/Form"
 import { addDoc, collection } from "firebase/firestore";
 import HabitsContext from "../config/HabitsContext";
 
@@ -36,6 +37,7 @@ const AddHabit = ({ navigation }) => {
 
   return (
     <Layout navigation={navigation}>
+      <Form />
       <Text>Add habit</Text>
       <Button onPress={addHabit} title="add dummy habit" />
     </Layout>

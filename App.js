@@ -37,6 +37,9 @@ import {
   faTrash,
   faCircleExclamation,
   faFaceGrinTears,
+  faCircleCheck,
+  faFutbol,
+  faSkiing,
 } from "@fortawesome/free-solid-svg-icons";
 
 library.add(
@@ -54,7 +57,10 @@ library.add(
   faFishFins,
   faTrash,
   faCircleExclamation,
-  faFaceGrinTears
+  faFaceGrinTears,
+  faCircleCheck,
+  faFutbol,
+  faSkiing,
 );
 
 import HabitsContext from "./config/HabitsContext";
