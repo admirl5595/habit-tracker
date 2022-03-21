@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { View, Text, Button } from "react-native";
 import Layout from "./Layout";
-import Form from "../components/new-habits/Form"
+import Form from "../components/new-habits/Form";
 import { addDoc, collection } from "firebase/firestore";
 import HabitsContext from "../config/HabitsContext";
 
@@ -17,19 +17,15 @@ const AddHabit = ({ navigation }) => {
   const userHabitCollectionRef = collection(db, "users", user.uid, "habits");
 
   // temporary create function
-  const addHabit = async () => {
-    const dummyHabit = {
-      name: "Go running 2",
-      completedDays: [true, true, false, false],
-      color: "green",
-      icon: "person-running", // fontawesome icon
-      dayOfWeek: [false, false, false, true, true, true, true],
-    };
+  const addHabit = async (newHabitInfo) => {
+    // add key value pairs to the new habit and declare completed days array (list of dates)
+    const newHabit = { ...newHabitInfo, completedDays: [] };
+
     // adds document to user's habit collection (autoId)
-    const res = await addDoc(userHabitCollectionRef, dummyHabit);
+    const res = await addDoc(userHabitCollectionRef, newHabit);
 
     // add habit to context with id from firebase response
-    if (res) setHabits([...habits, { ...dummyHabit, id: res.id }]);
+    if (res) setHabits([...habits, { ...newHabit, id: res.id }]);
 
     // redirect to dailyhabits
     navigation.navigate("DailyHabits");
@@ -37,9 +33,7 @@ const AddHabit = ({ navigation }) => {
 
   return (
     <Layout navigation={navigation}>
-      <Form />
-      <Text>Add habit</Text>
-      <Button onPress={addHabit} title="add dummy habit" />
+      <Form onSubmit={(newHabitInfo) => addHabit(newHabitInfo)} />
     </Layout>
   );
 };

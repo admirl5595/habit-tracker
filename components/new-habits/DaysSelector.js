@@ -14,13 +14,13 @@ const DaysSelector = ({ selectedDays, setSelectedDays }) => {
 
   // days of week
   let days = [
-    "sunday",
     "monday",
     "tuesday",
     "wednesday",
     "thursday",
     "friday",
     "saturday",
+    "sunday",
   ];
 
   return (
@@ -30,7 +30,7 @@ const DaysSelector = ({ selectedDays, setSelectedDays }) => {
           <View
             style={[
               styles.btn,
-                selectedDays.includes(day)
+              selectedDays.includes(day)
                 ? { backgroundColor: backgroundColor } // color selected day button
                 : { backgroundColor: "#fff" },
             ]}
