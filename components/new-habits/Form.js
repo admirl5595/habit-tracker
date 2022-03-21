@@ -1,36 +1,45 @@
-import React, {useState} from 'react'
+import React, { useState } from "react";
 
-import { Text, View, TextInput, TouchableOpacity,  SafeAreaView, StyleSheet, ScrollView  } from "react-native";
+import {
+  Text,
+  View,
+  TextInput,
+  TouchableOpacity,
+  SafeAreaView,
+  StyleSheet,
+  ScrollView,
+  Button,
+} from "react-native";
+
+import { theme } from "../../config/theme/styles";
 
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 
-import { primaryColor } from '../../config/theme/styles';
+import { primaryColor } from "../../config/theme/styles";
 
-import DaysSelector from '../new-habits/DaysSelector';
+import DaysSelector from "../new-habits/DaysSelector";
 
-import styles from './FormStyles'
+import styles from "./FormStyles";
 
 // onSubmit: either create or edit habit
 // habitInfor: previous habit info (null when creating a new one)
-const Form = ({onSubmit, habitInfo}) => {
-  
+const Form = ({ onSubmit, habitInfo }) => {
+  const [errorMessage, setErrorMessage] = useState("");
+
   // habit name
-  const [name, setName] = useState(habitInfo ? habitInfo.name : "") 
+  const [name, setName] = useState(habitInfo ? habitInfo.name : "");
 
   const icons = [
     "person-running",
     "person-swimming",
     "fish-fins",
-    'futbol',
-    'skiing',
-    "person-running",
-    "person-swimming",
-    "fish-fins",
-    'futbol',
-    'skiing'
-  ]
+    "futbol",
+    "skiing",
+    "dumbbell",
+    "keyboard",
+  ];
 
-  const [icon, setIcon] = useState(habitInfo ? habitInfo.icon : '')
+  const [icon, setIcon] = useState(habitInfo ? habitInfo.icon : "");
 
   const days = [
     "monday",
@@ -39,84 +48,166 @@ const Form = ({onSubmit, habitInfo}) => {
     "thursday",
     "friday",
     "saturday",
-    "sunday"
-  ]
+    "sunday",
+  ];
 
   // initial days selection
-  const defaultDays = habitInfo ? habitInfo.dayOfWeek : [false, false, false, false, false, false, false]
+  const defaultDays = habitInfo
+    ? habitInfo.dayOfWeek
+    : [false, false, false, false, false, false, false];
 
   // turn bool list into list of day strings
-  let defaultDaysStrings = defaultDays.map((bool, index) => bool ? days[index] : null)
+  let defaultDaysStrings = defaultDays.map((bool, index) =>
+    bool ? days[index] : null
+  );
 
   // remove null values after mapping
-  defaultDaysStrings = defaultDaysStrings.filter((value) => value !== null)
+  defaultDaysStrings = defaultDaysStrings.filter((value) => value !== null);
 
-  const [selectedDays, setSelectedDays] = useState(defaultDaysStrings)
+  const [selectedDays, setSelectedDays] = useState(defaultDaysStrings);
 
   // colors the user can assign to a habit
   const colors = [
-    'rgba(127, 208, 245, 1)',
-    'rgba(111, 237, 109, 1)',
-    'rgba(173, 109, 237, 1)',
-    'rgba(245, 91, 91, 1)',
-    'rgba(227, 232, 86, 1)' 
-  ]
+    "rgba(127, 208, 245, 1)",
+    "rgba(111, 237, 109, 1)",
+    "rgba(173, 109, 237, 1)",
+    "rgba(245, 91, 91, 1)",
+    "rgba(227, 232, 86, 1)",
+  ];
 
-  const [color, setColor] = useState(habitInfo ? habitInfo.color : null)
+  const [color, setColor] = useState(habitInfo ? habitInfo.color : null);
 
   // toggle the inclusion of a day in the selected days
   const toggleDay = (day) => {
+    let selectedDaysCopy = [...selectedDays];
 
-    let selectedDaysCopy = [...selectedDays]
-
-    console.log(selectedDaysCopy)
-
-    console.log(day)
-
-    if (selectedDaysCopy.includes(day)){
-      selectedDaysCopy = selectedDaysCopy.filter(prevDay => prevDay !== day)
-      
-      console.log(day)
+    if (selectedDaysCopy.includes(day)) {
+      selectedDaysCopy = selectedDaysCopy.filter((prevDay) => prevDay !== day);
     } else {
-      selectedDaysCopy.push(day)
+      selectedDaysCopy.push(day);
     }
 
-    setSelectedDays(selectedDaysCopy)
+    setSelectedDays(selectedDaysCopy);
+  };
 
-  }
+  const handleSubmit = () => {
+    // verify name
+    if (!(1 <= name.length && name.length <= 25)) {
+      setErrorMessage("name invalid");
+      return;
+    }
 
-  return(
-    <ScrollView  showsVerticalScrollIndicator={false}  style={styles.container}>
+    // verify icon
+    if (!icon) {
+      setErrorMessage("choose an icon");
+      return;
+    }
 
-      <Text style={styles.inputLabel}>Name</Text> 
-      <TextInput style={styles.textInput} onChangeText={setName} placeholder='Habit name'/>
+    // verify frequency (at least one day)
+    if (selectedDays.length === 0) {
+      setErrorMessage("pick at least one day");
+      return;
+    }
 
-      <Text style={styles.inputLabel}>Icon</Text> 
-      <ScrollView  showsHorizontalScrollIndicator={false}  horizontal={true} style={styles.iconsContainer}>
-      {icons.map(iconOption =>  
-        <TouchableOpacity 
-        style={[styles.icon]} 
-        onPress={() => setIcon(iconOption)} >
-          <FontAwesomeIcon color={iconOption === icon ? primaryColor : 'gray'}  size={50} key={iconOption} icon={iconOption}/>
-        </TouchableOpacity> )}
+    // verify color
+    if (!color) {
+      setErrorMessage("pick a color");
+      return;
+    }
+
+    setErrorMessage("");
+
+    // convert list of days to bool list
+    const days = {
+      monday: 0,
+      tuesday: 1,
+      wednesday: 2,
+      thursday: 3,
+      friday: 4,
+      saturday: 5,
+      sunday: 6,
+    };
+
+    const selectedDaysCopy = [...selectedDays];
+
+    let dayOfWeek = [false, false, false, false, false, false, false];
+
+    for (let i = 0; i < selectedDaysCopy.length; i++) {
+      // index corresponding to day of week
+      let index = days[selectedDaysCopy[i]];
+
+      dayOfWeek[index] = true;
+    }
+
+    const newHabitInfo = {
+      name: name,
+      icon: icon,
+      dayOfWeek: dayOfWeek,
+      color: color,
+    };
+
+    // pass habit information to submit funciton (add or edit)
+    onSubmit(newHabitInfo);
+  };
+
+  return (
+    <>
+      <ScrollView showsVerticalScrollIndicator={false} style={styles.container}>
+        {errorMessage ? (
+          <Text style={styles.errorMessage}>{errorMessage}</Text>
+        ) : null}
+        <Text style={styles.inputLabel}>Name</Text>
+        <TextInput
+          style={styles.textInput}
+          onChangeText={setName}
+          placeholder="Habit name"
+        />
+
+        <Text style={styles.inputLabel}>Icon</Text>
+        <ScrollView
+          showsHorizontalScrollIndicator={false}
+          horizontal={true}
+          style={styles.iconsContainer}
+        >
+          {icons.map((iconOption) => (
+            <TouchableOpacity
+              style={[styles.icon]}
+              onPress={() => setIcon(iconOption)}
+            >
+              <FontAwesomeIcon
+                color={iconOption === icon ? primaryColor : "gray"}
+                size={50}
+                key={iconOption}
+                icon={iconOption}
+              />
+            </TouchableOpacity>
+          ))}
+        </ScrollView>
+
+        <Text style={styles.inputLabel}>Frequency</Text>
+        <DaysSelector
+          selectedDays={selectedDays}
+          setSelectedDays={(day) => toggleDay(day)}
+        />
+
+        <Text style={styles.inputLabel}>Color</Text>
+        <View style={styles.colorSelectorContainer}>
+          {colors.map((colorOption) => (
+            <TouchableOpacity
+              style={[styles.colorSelector, { backgroundColor: colorOption }]}
+              onPress={() => setColor(colorOption)}
+            >
+              {color === colorOption ? (
+                <FontAwesomeIcon color="#fff" size={30} icon="circle-check" />
+              ) : null}
+            </TouchableOpacity>
+          ))}
+        </View>
       </ScrollView>
-
-      <Text style={styles.inputLabel}>Frequency</Text> 
-      <DaysSelector selectedDays={selectedDays} setSelectedDays={(day)=>toggleDay(day)}/>
-
-      <Text style={styles.inputLabel}>Color</Text> 
-      <View style={styles.colorSelectorContainer}>
-        {colors.map(colorOption => 
-        <TouchableOpacity 
-        style={[styles.colorSelector, {backgroundColor: colorOption}]} 
-        onPress={() => setColor(colorOption)}>
-          {color === colorOption ? <FontAwesomeIcon color='#fff' size={30} icon='circle-check' /> : null}
-          </TouchableOpacity>
-        
-       )}
-      </View>
-      
-    </ScrollView>
+      <TouchableOpacity style={theme.btnContainer} onPress={handleSubmit}>
+        <Text style={theme.btnText}>submit</Text>
+      </TouchableOpacity>
+    </>
   );
 };
 

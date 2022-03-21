@@ -11,9 +11,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   habitHeader: {
-    fontSize: 35,
+    fontSize: 25,
     marginLeft: 20,
     flex: 1,
+    color: "black",
+    fontWeight: "normal",
   },
   removeBtn: {
     color: "rgba(255,50,50,1)",

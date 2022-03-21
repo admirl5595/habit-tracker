@@ -40,6 +40,8 @@ import {
   faCircleCheck,
   faFutbol,
   faSkiing,
+  faDumbbell,
+  faKeyboard,
 } from "@fortawesome/free-solid-svg-icons";
 
 library.add(
@@ -61,6 +63,8 @@ library.add(
   faCircleCheck,
   faFutbol,
   faSkiing,
+  faDumbbell,
+  faKeyboard
 );
 
 import HabitsContext from "./config/HabitsContext";
