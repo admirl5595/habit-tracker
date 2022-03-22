@@ -16,16 +16,45 @@ export const notificationSetup = (notificationListener, responseListener) => {
   };
 };
 
-// schedule a notification
-export async function schedulePushNotification() {
-  await Notifications.scheduleNotificationAsync({
-    content: {
-      title: "You've got mail! 📬",
-      body: "Here is the notification body",
-      data: { data: "goes here" },
-    },
-    trigger: { seconds: 2 },
-  });
+// schedule a notification at a time in daysOfWeek
+// dayOfWeekStrings: list of day strings
+// time: Date object (only hours and minutes are relevant)
+// name: habit name (string)
+export async function schedulePushNotification(dayOfWeekStrings, time, name) {
+  // create a weekly notification for each day in dayOfWeekStrings at hour and minute mark from time
+
+  console.log(dayOfWeekStrings);
+  console.log(time.getHours() + time.getMinutes().toString());
+  console.log(name);
+
+  const dayNums = {
+    monday: 2,
+    tuesday: 3,
+    wednesday: 4,
+    thursday: 5,
+    friday: 6,
+    saturday: 7,
+    sunday: 1,
+  };
+  for (let i = 0; i < dayOfWeekStrings.length; i++) {
+    let dayString = dayOfWeekStrings[i];
+
+    const trigger = {
+      repeats: true,
+      weekday: dayNums[dayString],
+      hour: time.getHours(),
+      minute: time.getMinutes(),
+    };
+
+    await Notifications.scheduleNotificationAsync({
+      content: {
+        title: "Don't forget to " + name + " today!",
+        body: "Don't forget to " + name + " today!",
+        data: { data: "goes here" },
+      },
+      trigger: trigger,
+    });
+  }
 }
 
 // get notification access token

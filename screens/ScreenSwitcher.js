@@ -35,8 +35,6 @@ const ScreenSwitcher = () => {
   // listen to user authentication state
   const [user, loading, error] = useAuthState(auth);
 
-  console.log(user.uid);
-
   return (
     <NavigationContainer>
       <Stack.Navigator>

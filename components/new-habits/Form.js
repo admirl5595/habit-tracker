@@ -159,8 +159,6 @@ const Form = ({ onSubmit, habitInfo }) => {
 
   const [time, setTime] = useState(defaultTime);
 
-  useEffect(() => console.log(time), [time]);
-
   return (
     <>
       <ScrollView showsVerticalScrollIndicator={false} style={styles.container}>
