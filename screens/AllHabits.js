@@ -1,22 +1,28 @@
 import React, { useContext } from "react";
 
-import { Text } from "react-native";
+import { View, StyleSheet } from "react-native";
 import Layout from "./Layout";
 
 import HabitsContext from "../config/HabitsContext";
+import Week from "../components/weekly-habits/Week";
+import WeekTable from "../components/weekly-habits/WeekTable";
 
 const AllHabits = ({ navigation }) => {
-  // use context
-  const { habits, setHabits } = useContext(HabitsContext);
-
   return (
     <Layout navigation={navigation}>
-      <Text>All habits</Text>
-      {habits.map((habit) => (
-        <Text key={habit.id}>{habit.name}</Text>
-      ))}
+      <View style={styles.container}>
+      <Week/>
+      <WeekTable/>
+      </View>
     </Layout>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: "flex-start"
+  }
+});
 
 export default AllHabits;
