@@ -6,7 +6,9 @@ import { addDoc, collection } from "firebase/firestore";
 import HabitsContext from "../config/HabitsContext";
 
 import { db, auth } from "../firebase-config";
-import { schedulePushNotification } from "../config/notifications-config";
+import { scheduleHabitReminders } from "../config/notifications-config";
+
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const AddHabit = ({ navigation }) => {
   const user = auth.currentUser;
@@ -51,11 +53,21 @@ const AddHabit = ({ navigation }) => {
       dayOfWeekStrings = dayOfWeekStrings.filter((value) => value !== null);
 
       // send list of days and reminder time and set scheduled reminder
-      await schedulePushNotification(
+      const notificationIds = await scheduleHabitReminders(
         dayOfWeekStrings,
         newHabitInfo.time,
         newHabitInfo.name
       );
+
+      // store notification id's for new habit (habitId: notificationIds)
+      try {
+        await AsyncStorage.setItem(res.id, JSON.stringify(notificationIds));
+        console.log("stored value successfully");
+      } catch (e) {
+        // error
+        console.log("couldn't store in local storage");
+        console.log(e);
+      }
     }
 
     // redirect to dailyhabits

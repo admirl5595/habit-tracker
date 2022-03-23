@@ -4,6 +4,11 @@ import * as Notifications from "expo-notifications";
 export const notificationSetup = (notificationListener, responseListener) => {
   registerForPushNotificationsAsync();
 
+  Notifications.getAllScheduledNotificationsAsync().then((notifications) => {
+    console.log("scheduled notifications:");
+    console.log(notifications);
+  });
+
   notificationListener.current =
     Notifications.addNotificationReceivedListener();
 
@@ -20,12 +25,11 @@ export const notificationSetup = (notificationListener, responseListener) => {
 // dayOfWeekStrings: list of day strings
 // time: Date object (only hours and minutes are relevant)
 // name: habit name (string)
-export async function schedulePushNotification(dayOfWeekStrings, time, name) {
+export async function scheduleHabitReminders(dayOfWeekStrings, time, name) {
   // create a weekly notification for each day in dayOfWeekStrings at hour and minute mark from time
 
-  console.log(dayOfWeekStrings);
-  console.log(time.getHours() + time.getMinutes().toString());
-  console.log(name);
+  // list of notification ids related to this habit
+  let notificationIds = [];
 
   const dayNums = {
     monday: 2,
@@ -40,16 +44,71 @@ export async function schedulePushNotification(dayOfWeekStrings, time, name) {
     let dayString = dayOfWeekStrings[i];
 
     const trigger = {
+      channelId: "Habit reminders", // identifier for habit reminder channel
       repeats: true,
       weekday: dayNums[dayString],
       hour: time.getHours(),
       minute: time.getMinutes(),
     };
 
+    // id for notification
+    const id = await Notifications.scheduleNotificationAsync({
+      content: {
+        title: "Don't forget to " + name.toLowerCase() + " today!",
+        body: "Don't forget to " + name.toLowerCase() + " today!",
+        data: { data: "goes here" },
+      },
+      trigger: trigger,
+    });
+
+    notificationIds.push(id);
+  }
+
+  return notificationIds;
+}
+
+// cancels reminders for a habit (at least one id)
+export async function cancelHabitReminders(ids) {
+  for (let i = 0; i < ids.length; i++) {
+    const id = ids[i];
+
+    Notifications.cancelScheduledNotificationAsync(id);
+  }
+}
+
+// cancel old reminders and create new ones with new time
+export async function editHabitReminders(ids, time) {
+  let oldNotifications;
+
+  await Notifications.getAllScheduledNotificationsAsync().then(
+    (notifications) => {
+      // get notifications matching by id
+      oldNotifications = notifications.filter((notification) =>
+        ids.includes(notification.identifier)
+      );
+    }
+  );
+
+  console.log(oldNotifications);
+
+  // cancel the old habits
+  await cancelHabitReminders(ids);
+
+  for (let i = 0; i < oldNotifications.length; i++) {
+    let oldNotification = oldNotifications[i];
+
+    const trigger = {
+      channelId: "Habit reminders", // identifier for habit reminder channel
+      repeats: true,
+      weekday: oldNotification.trigger.weekday,
+      hour: time.getHours(),
+      minute: time.getMinutes(),
+    };
+
     await Notifications.scheduleNotificationAsync({
       content: {
-        title: "Don't forget to " + name + " today!",
-        body: "Don't forget to " + name + " today!",
+        title: oldNotification.content.title,
+        body: oldNotification.content.body,
         data: { data: "goes here" },
       },
       trigger: trigger,
@@ -79,8 +138,9 @@ async function registerForPushNotificationsAsync() {
   }
 
   if (Platform.OS === "android") {
-    Notifications.setNotificationChannelAsync("default", {
-      name: "default",
+    // create channel with "Habit reminders" as identifier with object defining behaviour
+    Notifications.setNotificationChannelAsync("Habit reminders", {
+      name: "Habit reminders",
       importance: Notifications.AndroidImportance.MAX,
       vibrationPattern: [0, 250, 250, 250],
       lightColor: "#FF231F7C",

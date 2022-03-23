@@ -81,7 +81,7 @@ const App = () => {
   const responseListener = useRef();
 
   useEffect(() => {
-    // notificationSetup(notificationListener, responseListener);
+    notificationSetup(notificationListener, responseListener);
   }, []);
 
   const [habits, setHabits] = useState([]);
