@@ -23,27 +23,28 @@ const DaySelector = ({ selectedDay, setSelectedDay }) => {
     "saturday",
   ];
 
-  // show 7 days from today (day = friday, saturday, sunday, ..., thursday)
+  const backGroundColor = (day) => {
+    let dayIndex = new Date().getDay();
 
-  // note: sunday has index 0, saturday has index 6
+    // set color to primary color if selected
+    if (day === selectedDay) {
+      return { backgroundColor: backgroundColor };
+    }
 
-  let part1 = days.splice(dayNum, days.length - dayNum);
-  let part2 = days.splice(0, dayNum);
+    // set to red if it is day of week
+    if (day === days[dayIndex]) {
+      return { backgroundColor: "red" };
+    }
 
-  days = [...part1, ...part2];
+    // white if neither
+    return { backgroundColor: "#fff" };
+  };
 
   return (
     <View style={styles.container}>
       {days.map((day) => (
         <TouchableOpacity key={day} onPress={() => setSelectedDay(day)}>
-          <View
-            style={[
-              styles.btn,
-              day === selectedDay
-                ? { backgroundColor: backgroundColor } // color selected day button
-                : { backgroundColor: "#fff" },
-            ]}
-          >
+          <View style={[styles.btn, backGroundColor(day)]}>
             <FontAwesomeIcon size={30} icon={day[0]} />
           </View>
         </TouchableOpacity>
