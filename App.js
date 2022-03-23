@@ -42,6 +42,8 @@ import {
   faSkiing,
   faDumbbell,
   faKeyboard,
+  faCaretRight,
+  faCaretLeft,
 } from "@fortawesome/free-solid-svg-icons";
 
 library.add(
@@ -64,7 +66,9 @@ library.add(
   faFutbol,
   faSkiing,
   faDumbbell,
-  faKeyboard
+  faKeyboard,
+  faCaretRight,
+  faCaretLeft
 );
 
 import HabitsContext from "./config/HabitsContext";

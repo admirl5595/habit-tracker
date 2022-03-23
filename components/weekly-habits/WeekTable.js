@@ -39,20 +39,17 @@ export default function WeekTable() {
       numCDays[0] += 1;
       return (
         <Cell
-          style={styles.habitCheckboxCell}
           key={rowIndex + props.day.getDate()}
+          // Add custom color
           data={<View style={styles.habitCheckbox}></View>}
-          textStyle={styles.text}
           borderStyle={{ borderWidth: 1, borderColor: "#000" }}
         />
       );
     } else
       return (
         <Cell
-          style={styles.habitCheckboxCell}
           key={rowIndex + props.day.getDate()}
           data={<View style={styles.habitCheckbox} opacity={0.3}></View>}
-          textStyle={styles.text}
           borderStyle={{ borderWidth: 1, borderColor: "#000" }}
         />
       );
@@ -66,7 +63,7 @@ export default function WeekTable() {
       <>
         <TableWrapper style={styles.row}>
           <Cell
-            key={"icon "+rowIndex}
+            key={"icon " + rowIndex}
             data={
               <>
                 <FontAwesomeIcon size={30} icon={props.icon} />
@@ -78,7 +75,7 @@ export default function WeekTable() {
             displayCell({ cDays, day }, numCDays, rowIndex)
           )}
           <Cell
-            key={"percentage "+rowIndex}
+            key={"percentage " + rowIndex}
             data={Math.ceil((numCDays / 7) * 100)}
             textStyle={styles.text}
             borderStyle={{ borderWidth: 1, borderColor: "#000" }}
@@ -123,6 +120,6 @@ const styles = StyleSheet.create({
     width: 25,
     height: 25,
     marginLeft: "auto",
-    marginRight: "auto"
-  }
+    marginRight: "auto",
+  },
 });
