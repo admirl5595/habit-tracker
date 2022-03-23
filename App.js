@@ -1,23 +1,18 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 
-import { LogBox } from "react-native";
+import { LogBox, Platform } from "react-native";
 // prevent annoying yellow warning
 LogBox.ignoreLogs(["Setting a timer"]);
 
-import { auth } from "./firebase-config";
+import Constants from "expo-constants";
+import * as Notifications from "expo-notifications";
 
-import LoadingScreen from "./screens/LoadingScreen";
-import AllHabits from "./screens/AllHabits";
-import DailyHabits from "./screens/DailyHabits";
-import AddHabit from "./screens/AddHabit";
-import LoginScreen from "./screens/auth/LoginScreen";
-import RegisterScreen from "./screens/auth/RegisterScreen";
+import {
+  notificationSetup,
+  schedulePushNotification,
+} from "./config/notifications-config";
 
-import { useAuthState } from "react-firebase-hooks/auth";
-
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
-
-import { NavigationContainer } from "@react-navigation/native";
+import ScreenSwitcher from "./screens/ScreenSwitcher";
 
 // icons
 import { library } from "@fortawesome/fontawesome-svg-core";
@@ -42,6 +37,8 @@ import {
   faSkiing,
   faDumbbell,
   faKeyboard,
+  faCaretUp,
+  faCaretDown,
   faCaretRight,
   faCaretLeft,
 } from "@fortawesome/free-solid-svg-icons";
@@ -67,50 +64,36 @@ library.add(
   faSkiing,
   faDumbbell,
   faKeyboard,
+  faCaretUp,
+  faCaretDown,
   faCaretRight,
   faCaretLeft
 );
 
 import HabitsContext from "./config/HabitsContext";
 
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: false,
+    shouldSetBadge: false,
+  }),
+});
+
 const App = () => {
-  const Stack = createNativeStackNavigator();
+  const notificationListener = useRef();
+  const responseListener = useRef();
 
-  const AppScreens = (
-    <>
-      <Stack.Screen name="DailyHabits" component={DailyHabits} />
-      <Stack.Screen name="AllHabits" component={AllHabits} />
-      <Stack.Screen name="AddHabit" component={AddHabit} />
-    </>
-  );
-  const AuthScreens = (
-    <>
-      <Stack.Screen name="Login" component={LoginScreen} />
-      <Stack.Screen name="Register" component={RegisterScreen} />
-    </>
-  );
-
-  // listen to user authentication state
-  const [user, loading, error] = useAuthState(auth);
+  useEffect(() => {
+    notificationSetup(notificationListener, responseListener);
+  }, []);
 
   const [habits, setHabits] = useState([]);
-
-  console.log("context changed");
 
   // conditional rendering of screens
   return (
     <HabitsContext.Provider value={{ habits, setHabits }}>
-      <NavigationContainer>
-        <Stack.Navigator>
-          {user ? (
-            AppScreens
-          ) : loading ? (
-            <Stack.Screen name="Loading" component={LoadingScreen} />
-          ) : (
-            AuthScreens
-          )}
-        </Stack.Navigator>
-      </NavigationContainer>
+      <ScreenSwitcher />
     </HabitsContext.Provider>
   );
 };

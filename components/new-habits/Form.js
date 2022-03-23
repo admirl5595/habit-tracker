@@ -1,14 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import {
   Text,
   View,
   TextInput,
   TouchableOpacity,
-  SafeAreaView,
-  StyleSheet,
   ScrollView,
-  Button,
 } from "react-native";
 
 import { theme } from "../../config/theme/styles";
@@ -20,6 +17,8 @@ import { primaryColor } from "../../config/theme/styles";
 import DaysSelector from "../new-habits/DaysSelector";
 
 import styles from "./FormStyles";
+
+import TimeInput from "./TimeInput";
 
 // onSubmit: either create or edit habit
 // habitInfor: previous habit info (null when creating a new one)
@@ -145,11 +144,18 @@ const Form = ({ onSubmit, habitInfo }) => {
       icon: icon,
       dayOfWeek: dayOfWeek,
       color: color,
+      time: time,
     };
 
     // pass habit information to submit funciton (add or edit)
     onSubmit(newHabitInfo);
   };
+
+  // create default time set to midnight
+  const defaultTime = new Date();
+  defaultTime.setHours(0, 0, 0, 0);
+
+  const [time, setTime] = useState(defaultTime);
 
   return (
     <>
@@ -199,7 +205,9 @@ const Form = ({ onSubmit, habitInfo }) => {
             <TouchableOpacity
               key={colorOption}
               style={[styles.colorSelector, { backgroundColor: colorOption }]}
-              onPress={() => setColor(colorOption)}
+              onPress={() => {
+                setColor(colorOption);
+              }}
             >
               {color === colorOption ? (
                 <FontAwesomeIcon color="#fff" size={30} icon="circle-check" />
@@ -207,6 +215,9 @@ const Form = ({ onSubmit, habitInfo }) => {
             </TouchableOpacity>
           ))}
         </View>
+
+        <Text style={styles.inputLabel}>Reminder</Text>
+        <TimeInput time={time} setTime={setTime} />
       </ScrollView>
       <TouchableOpacity style={theme.btnContainer} onPress={handleSubmit}>
         <Text style={theme.btnText}>

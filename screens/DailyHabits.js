@@ -17,6 +17,9 @@ import Layout from "./Layout";
 import HabitsContext from "../config/HabitsContext";
 import NoHabits from "../components/daily-habits/NoHabits";
 
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { cancelHabitReminders } from "../config/notifications-config";
+
 const DailyHabits = ({ navigation }) => {
   // current user
   const user = auth.currentUser;
@@ -86,10 +89,24 @@ const DailyHabits = ({ navigation }) => {
   };
 
   // remove habit by id
-  const removeHabit = async (id) => {
-    // collection(db, "users", user.uid, "habits");
-    const habitDoc = doc(db, "users", user.uid, "habits", id);
+  const removeHabit = async (habitId) => {
+    const habitDoc = doc(db, "users", user.uid, "habits", habitId);
+
     await deleteDoc(habitDoc);
+
+    let notificationIds;
+
+    try {
+      notificationIds = await AsyncStorage.getItem(habitId);
+
+      notificationIds = notificationIds ? JSON.parse(notificationIds) : null;
+
+      cancelHabitReminders(notificationIds);
+    } catch (e) {
+      console.log("error occured when fetching local data");
+      console.log(e);
+    }
+
     await getHabits();
   };
 
