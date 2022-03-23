@@ -18,8 +18,6 @@ import DaysSelector from "../new-habits/DaysSelector";
 
 import styles from "./FormStyles";
 
-import { schedulePushNotification } from "../../config/notifications-config";
-
 import TimeInput from "./TimeInput";
 
 // onSubmit: either create or edit habit
