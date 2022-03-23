@@ -98,6 +98,7 @@ const DailyHabits = ({ navigation }) => {
 
     try {
       notificationIds = await AsyncStorage.getItem(habitId);
+
       notificationIds = notificationIds ? JSON.parse(notificationIds) : null;
 
       cancelHabitReminders(notificationIds);
