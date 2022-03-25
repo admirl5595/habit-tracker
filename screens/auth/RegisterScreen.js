@@ -31,6 +31,7 @@ export default function RegisterScreen({ navigation }) {
         // store habits and user id in user collection
         const userData = {
           uid: user.uid,
+          email: email,
         };
 
         // create new document in users collection with user id as name

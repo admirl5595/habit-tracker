@@ -4,7 +4,15 @@ import { View, Button, FlatList, ActivityIndicator } from "react-native";
 import styles from "./DailyHabitsStyle";
 
 import { db } from "../firebase-config";
-import { collection, doc, getDocs, deleteDoc } from "firebase/firestore";
+import {
+  collection,
+  doc,
+  getDocs,
+  deleteDoc,
+  getDoc,
+  addDoc,
+  updateDoc,
+} from "firebase/firestore";
 
 import { signOut } from "firebase/auth";
 import { auth } from "../firebase-config";
@@ -70,12 +78,57 @@ const DailyHabits = ({ navigation }) => {
     };
 
     // return list of habits
-    const newDisplayHabits = habitsCopy.filter(
+    let newDisplayHabits = habitsCopy.filter(
       (habit) =>
         habit.dayOfWeek.filter(
           (dayBool, index) => days[index] === selectedDay && dayBool
         ).length !== 0
     );
+
+    // remove habits that are already completed for the selected day
+
+    // set start of week date
+    const selectedDate = new Date();
+    selectedDate.setDate(selectedDate.getDate() - new Date().getDay());
+
+    console.log("start of week: " + selectedDate);
+
+    let daysOfWeek = {
+      sunday: 0,
+      monday: 1,
+      tuesday: 2,
+      wednesday: 3,
+      thursday: 4,
+      friday: 5,
+      saturday: 6,
+    };
+
+    // add number of days since start of week
+    selectedDate.setDate(selectedDate.getDate() + daysOfWeek[selectedDay]);
+
+    console.log("selected date: " + selectedDate);
+
+    const selectedDateYear = selectedDate.getFullYear();
+    const selectedDateMonth = selectedDate.getMonth();
+    const selectedDateDay = selectedDate.getDay();
+
+    newDisplayHabits = newDisplayHabits.filter((habit) => {
+      let completedDays = habit.completedDays;
+
+      for (let i = 0; i < completedDays.length; i++) {
+        let date = completedDays[i].toDate();
+        if (
+          date.getFullYear() === selectedDateYear &&
+          date.getMonth() === selectedDateMonth &&
+          date.getDay() === selectedDateDay
+        ) {
+          return false;
+        }
+      }
+
+      return true;
+    });
+
     setDisplayHabits(newDisplayHabits);
   };
 
@@ -108,6 +161,28 @@ const DailyHabits = ({ navigation }) => {
     }
 
     await getHabits();
+  };
+
+  // complete a habit (only for todays date)
+  const completeHabit = async (id) => {
+    const user = auth.currentUser;
+
+    const habitRef = doc(db, "users", user.uid, "habits", id);
+
+    let habitDoc = await getDoc(habitRef);
+
+    let habit = habitDoc.data();
+
+    // get old completed days array
+    let oldCompletedDays = habit.completedDays;
+
+    // should check if completed days already contains todays date
+
+    // append todays date
+    let newCompletedDays = [...oldCompletedDays, new Date()];
+
+    await updateDoc(habitRef, { completedDays: newCompletedDays });
+    getHabits();
   };
 
   // filter habits when changing selected day and when habitsdata changes (CRUD)
@@ -146,7 +221,12 @@ const DailyHabits = ({ navigation }) => {
             style={{ width: "100%" }}
             data={displayHabits}
             renderItem={({ item }) => (
-              <HabitItem removeHabit={(id) => removeHabit(id)} item={item} />
+              <HabitItem
+                removeHabit={(id) => removeHabit(id)}
+                selectedDay={selectedDay}
+                item={item}
+                completeHabit={(id) => completeHabit(id)}
+              />
             )}
           />
         )}

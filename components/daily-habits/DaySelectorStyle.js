@@ -7,7 +7,7 @@ const styles = StyleSheet.create({
     marginVertical: 15,
   },
   btn: {
-    padding: 10,
+    padding: 7,
     borderRadius: 50,
   },
 });

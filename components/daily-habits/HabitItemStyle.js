@@ -19,6 +19,11 @@ const styles = StyleSheet.create({
   },
   removeBtn: {
     color: "rgba(255,50,50,1)",
+    marginHorizontal: 5,
+  },
+  completeBtn: {
+    color: "rgba(2,180,249,1)",
+    marginHorizontal: 5,
   },
 });
 
