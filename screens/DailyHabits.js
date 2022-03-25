@@ -222,6 +222,7 @@ const DailyHabits = ({ navigation }) => {
             data={displayHabits}
             renderItem={({ item }) => (
               <HabitItem
+                navigation={navigation}
                 removeHabit={(id) => removeHabit(id)}
                 selectedDay={selectedDay}
                 item={item}

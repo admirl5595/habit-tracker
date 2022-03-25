@@ -6,7 +6,7 @@ import styles from "./HabitItemStyle";
 
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 
-const HabitItem = ({ item, removeHabit, selectedDay, completeHabit }) => {
+const HabitItem = ({ item, removeHabit, selectedDay, completeHabit, navigation }) => {
   let daysOfWeek = [
     "sunday",
     "monday",
@@ -28,10 +28,11 @@ const HabitItem = ({ item, removeHabit, selectedDay, completeHabit }) => {
   };
 
   return (
-    <View style={[styles.habitContainer, backGroundColor]}>
+
+    <TouchableOpacity onPress={() => navigation.navigate('EditHabit', { habit: item })}>
+<View style={[styles.habitContainer, backGroundColor]}>
       <FontAwesomeIcon size={40} icon={item.icon} />
       <Text style={styles.habitHeader}>{item.name}</Text>
-
       <TouchableOpacity onPress={() => completeHabit(item.id)}>
         {isCurrentDay ? (
           <FontAwesomeIcon
@@ -45,6 +46,9 @@ const HabitItem = ({ item, removeHabit, selectedDay, completeHabit }) => {
         <FontAwesomeIcon style={styles.removeBtn} size={25} icon="trash" />
       </TouchableOpacity>
     </View>
+    </TouchableOpacity>
+
+    
   );
 };
 

@@ -91,6 +91,8 @@ export async function editHabitReminders(ids, time) {
 
   console.log(oldNotifications);
 
+  let notificationIds = []
+
   // cancel the old habits
   await cancelHabitReminders(ids);
 
@@ -105,7 +107,7 @@ export async function editHabitReminders(ids, time) {
       minute: time.getMinutes(),
     };
 
-    await Notifications.scheduleNotificationAsync({
+    let notificationId = await Notifications.scheduleNotificationAsync({
       content: {
         title: oldNotification.content.title,
         body: oldNotification.content.body,
@@ -113,7 +115,12 @@ export async function editHabitReminders(ids, time) {
       },
       trigger: trigger,
     });
+
+    notificationIds.push(notificationId)
   }
+
+  // return new list of notification ids for the edited habit
+  return notificationIds
 }
 
 // get notification access token
