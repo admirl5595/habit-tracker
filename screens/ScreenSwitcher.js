@@ -9,6 +9,7 @@ import LoadingScreen from "./LoadingScreen";
 import AllHabits from "./AllHabits";
 import DailyHabits from "./DailyHabits";
 import AddHabit from "./AddHabit";
+import EditHabit from "./EditHabit";
 import LoginScreen from "./auth/LoginScreen";
 import RegisterScreen from "./auth/RegisterScreen";
 
@@ -23,6 +24,7 @@ const ScreenSwitcher = () => {
       <Stack.Screen name="DailyHabits" component={DailyHabits} />
       <Stack.Screen name="AllHabits" component={AllHabits} />
       <Stack.Screen name="AddHabit" component={AddHabit} />
+      <Stack.Screen name="EditHabit" component={EditHabit} />
     </>
   );
   const AuthScreens = (

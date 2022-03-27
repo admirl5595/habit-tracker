@@ -152,8 +152,17 @@ const Form = ({ onSubmit, habitInfo }) => {
   };
 
   // create default time set to midnight
-  const defaultTime = new Date();
-  defaultTime.setHours(0, 0, 0, 0);
+
+  let defaultTime = new Date();
+
+  if (!habitInfo) {
+    defaultTime.setHours(0, 0, 0, 0);
+  } else {
+    let hours = habitInfo.time.toDate().getHours();
+    let minutes = habitInfo.time.toDate().getMinutes();
+
+    defaultTime.setHours(hours, minutes, 0, 0);
+  }
 
   const [time, setTime] = useState(defaultTime);
 
