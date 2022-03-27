@@ -8,6 +8,8 @@ import HabitsContext from "../config/HabitsContext";
 import { db, auth } from "../firebase-config";
 import { editHabitReminders } from "../config/notifications-config";
 
+import { getHabits } from "../config/crud-operations";
+
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const EditHabit = ({ route, navigation }) => {
@@ -29,14 +31,7 @@ const EditHabit = ({ route, navigation }) => {
     // adds document to user's habit collection (autoId)
     await updateDoc(habitDoc, updatedHabitFields);
 
-    // get user's habits collection (users/userId/habits)
-    const userHabitCollectionRef = collection(db, "users", user.uid, "habits");
-
-    const userHabits = await getDocs(userHabitCollectionRef);
-
-    setHabits(userHabits.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
-
-    // schedule notifications for this habit
+    getHabits(setHabits);
 
     // convert bool list to list of days of week
 

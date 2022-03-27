@@ -10,6 +10,8 @@ import { scheduleHabitReminders } from "../config/notifications-config";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
+import { getHabits } from "../config/crud-operations";
+
 const AddHabit = ({ navigation }) => {
   const user = auth.currentUser;
 
@@ -35,11 +37,7 @@ const AddHabit = ({ navigation }) => {
         "habits"
       );
 
-      const userHabits = await getDocs(userHabitCollectionRef);
-
-      setHabits(userHabits.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
-
-      // schedule notifications for this habit
+      getHabits(setHabits);
 
       // convert bool list to list of days of week
 
