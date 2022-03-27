@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import { View, Text, Button } from "react-native";
 import Layout from "./Layout";
 import Form from "../components/new-habits/Form";
-import { addDoc, collection } from "firebase/firestore";
+import { addDoc, collection, getDocs } from "firebase/firestore";
 import HabitsContext from "../config/HabitsContext";
 
 import { db, auth } from "../firebase-config";
@@ -28,7 +28,16 @@ const AddHabit = ({ navigation }) => {
 
     // add habit to context with id from firebase response
     if (res) {
-      setHabits([...habits, { ...newHabit, id: res.id }]);
+      const userHabitCollectionRef = collection(
+        db,
+        "users",
+        user.uid,
+        "habits"
+      );
+
+      const userHabits = await getDocs(userHabitCollectionRef);
+
+      setHabits(userHabits.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
 
       // schedule notifications for this habit
 

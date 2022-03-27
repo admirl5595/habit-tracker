@@ -6,13 +6,15 @@ import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 // setTime: set state function for parents time state
 // time: time state for parent
 export default function TimeInput({ time, setTime }) {
-  const [hours, setHours] = useState(0);
-  const [minutes, setMinutes] = useState(0);
+  const [hours, setHours] = useState(time.getHours());
+  const [minutes, setMinutes] = useState(time.getMinutes());
 
   const incrementHours = () => {
     const newHour = hours + 1 >= 24 ? 0 : hours + 1;
 
     setHours(newHour);
+
+    console.log("time from props: " + time);
 
     // make a copy of time state
     let timeCopy = new Date(time.getTime());
