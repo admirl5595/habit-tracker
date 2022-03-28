@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 
 import {
   Text,
@@ -20,12 +20,16 @@ import styles from "./FormStyles";
 
 import TimeInput from "./TimeInput";
 
-import { removeHabit } from "../../config/crud-operations";
+import { removeHabit, getHabits } from "../../config/crud-operations";
+
+import HabitsContext from "../../config/HabitsContext";
 
 // onSubmit: either create or edit habit
 // habitInfor: previous habit info (null when creating a new one)
 
-const Form = ({ onSubmit, habitInfo }) => {
+const Form = ({ onSubmit, habitInfo, navigation }) => {
+  const { setHabits } = useContext(HabitsContext);
+
   const [errorMessage, setErrorMessage] = useState("");
 
   // habit name
@@ -242,7 +246,11 @@ const Form = ({ onSubmit, habitInfo }) => {
               theme.btnContainer,
               { backgroundColor: "rgba(255,0,0,0.6)" },
             ]}
-            onPress={() => removeHabit(item.id)}
+            onPress={async () => {
+              await removeHabit(habitInfo.id);
+              await getHabits(setHabits);
+              navigation.navigate("DailyHabits");
+            }}
           >
             <Text style={theme.btnText}>Delete Habit</Text>
           </TouchableOpacity>

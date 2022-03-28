@@ -47,8 +47,6 @@ export const removeHabit = async (habitId) => {
     console.log("error occured when fetching local data");
     console.log(e);
   }
-
-  await getHabits();
 };
 
 // complete a habit (only for todays date)

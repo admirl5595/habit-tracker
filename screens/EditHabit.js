@@ -75,6 +75,7 @@ const EditHabit = ({ route, navigation }) => {
 
   return (
     <Form
+      navigation={navigation}
       habitInfo={habit}
       onSubmit={(updatedHabitInfo) => editHabit(updatedHabitInfo)}
     />
