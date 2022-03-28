@@ -11,7 +11,6 @@ export const theme = StyleSheet.create({
     padding: 10,
 
     borderRadius: 15,
-    borderWidth: 4,
     borderColor: primaryColor,
     margin: 15,
     backgroundColor: secondaryColor,

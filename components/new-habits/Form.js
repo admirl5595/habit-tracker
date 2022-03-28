@@ -20,6 +20,7 @@ import styles from "./FormStyles";
 
 import TimeInput from "./TimeInput";
 
+
 // onSubmit: either create or edit habit
 // habitInfor: previous habit info (null when creating a new one)
 
@@ -228,11 +229,24 @@ const Form = ({ onSubmit, habitInfo }) => {
         <Text style={styles.inputLabel}>Reminder</Text>
         <TimeInput time={time} setTime={setTime} />
       </ScrollView>
-      <TouchableOpacity style={theme.btnContainer} onPress={handleSubmit}>
-        <Text style={theme.btnText}>
-          {habitInfo ? "Edit habit" : "Add habit"}
-        </Text>
-      </TouchableOpacity>
+      <View style={{ flexDirection: "row", justifyContent: "center" }}>
+        <TouchableOpacity style={theme.btnContainer} onPress={handleSubmit}>
+          <Text style={theme.btnText}>
+            {habitInfo ? "Edit habit" : "Add habit"}
+          </Text>
+        </TouchableOpacity>
+        {habitInfo ? (
+          <TouchableOpacity
+            style={[
+              theme.btnContainer,
+              { backgroundColor: "rgba(255,0,0,0.6)" },
+            ]}
+            onPress={() => removeHabit(item.id)}
+          >
+            <Text style={theme.btnText}>Delete Habit</Text>
+          </TouchableOpacity>
+        ) : null}
+      </View>
     </>
   );
 };

@@ -14,8 +14,6 @@ const EditHabit = ({ route, navigation }) => {
   const user = auth.currentUser;
 
   const { habit } = route.params;
-  console.log("HABIT:");
-  console.log(habit.time.toDate());
 
   // data and function from context
   const { setHabits } = useContext(HabitsContext);
@@ -67,18 +65,13 @@ const EditHabit = ({ route, navigation }) => {
       updatedHabitFields.time
     );
 
-    console.log("new notification ids:");
-    console.log(notificationIds);
-
     // store notification id's for new habit (habitId: notificationIds)
     try {
       // overwrite previous notification ids for this habit
       await AsyncStorage.setItem(habit.id, JSON.stringify(notificationIds));
-      console.log("stored value successfully");
     } catch (e) {
       // error
-      console.log("couldn't store in local storage");
-      console.log(e);
+      console.error(e);
     }
 
     // redirect to dailyhabits

@@ -14,8 +14,6 @@ export default function TimeInput({ time, setTime }) {
 
     setHours(newHour);
 
-    console.log("time from props: " + time);
-
     // make a copy of time state
     let timeCopy = new Date(time.getTime());
     timeCopy.setHours(newHour);
