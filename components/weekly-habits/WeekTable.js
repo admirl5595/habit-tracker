@@ -13,6 +13,7 @@ export default function WeekTable() {
 
   const tableHead = ["", "S", "M", "T", "W", "T", "F", "S", "%"];
 
+  // Rename
   const findDaysInWeek = () => {
     const today = new Date();
     let daysOfWeek = [];
@@ -25,61 +26,82 @@ export default function WeekTable() {
     setDaysInWeek(daysOfWeek);
   };
 
-  const displayCell = (props, numCDays, rowIndex) => {
-    const cdString = props.cDays.map(
+  const isDayCompleted = (cDays, day, numCDays) => {
+    // Refactor
+    const cdString = cDays.map(
       (day) =>
         day.toDate().getDate().toString() +
         " " +
         day.toDate().getMonth().toString()
     );
-    const d =
-      props.day.getDate().toString() + " " + props.day.getMonth().toString();
+    const d = day.getDate().toString() + " " + day.getMonth().toString();
 
     if (cdString.includes(d)) {
       numCDays[0] += 1;
-      return (
-        <Cell
-          key={rowIndex + props.day.getDate()}
-          // Add custom color
-          data={<View style={styles.habitCheckbox}></View>}
-          borderStyle={{ borderWidth: 1, borderColor: "#000" }}
-        />
-      );
-    } else
-      return (
-        <Cell
-          key={rowIndex + props.day.getDate()}
-          data={<View style={styles.habitCheckbox} opacity={0.3}></View>}
-          borderStyle={{ borderWidth: 1, borderColor: "#000" }}
-        />
-      );
+      return true;
+    } else return false;
   };
 
+  // Edit props and parameters
+  const displayCell = (props, numCDays, rowIndex, habit) => {
+    const backGroundColor = {
+      backgroundColor: habit.color,
+    };
+
+    return (
+      <Cell
+        textStyle={styles.text}
+        key={rowIndex + props.day.getDate()}
+        // Add custom color
+        data={
+          <View
+            opacity={
+              isDayCompleted(props.cDays, props.day, numCDays) ? 0.9 : 0.1
+            }
+            style={[styles.habitCheckbox, backGroundColor]}
+          ></View>
+        }
+        borderStyle={{ borderWidth: 1, borderColor: "#000" }}
+      />
+    );
+  };
+
+  // Change props name
   const displayRow = (props, rowIndex) => {
     const cDays = props.completedDays;
+    // Is array to be passed by reference
     let numCDays = [0];
+
+    const IconColor = {
+      color: props.color,
+    };
 
     return (
       <>
         <TableWrapper style={styles.row}>
           <Cell
+            textStyle={styles.text}
             key={"icon " + rowIndex}
             data={
               <>
-                <FontAwesomeIcon size={30} icon={props.icon} />
+                <FontAwesomeIcon
+                  size={30}
+                  icon={props.icon}
+                  style={[styles.icon, IconColor]}
+                />
               </>
             }
             borderStyle={{ borderWidth: 1, borderColor: "#000" }}
-          ></Cell>
+          />
           {daysInWeek.map((day, cellIndex) =>
-            displayCell({ cDays, day }, numCDays, rowIndex)
+            displayCell({ cDays, day }, numCDays, rowIndex, props)
           )}
           <Cell
             key={"percentage " + rowIndex}
             data={Math.ceil((numCDays / 7) * 100)}
             textStyle={styles.text}
             borderStyle={{ borderWidth: 1, borderColor: "#000" }}
-          ></Cell>
+          />
         </TableWrapper>
       </>
     );
@@ -104,6 +126,7 @@ const styles = StyleSheet.create({
   head: { height: 40, backgroundColor: "#f1f8ff" },
   wrapper: { flexDirection: "row" },
   title: { backgroundColor: "#f6f8fa" },
+  icon: { marginLeft: "auto", marginRight: "auto" },
   row: {
     height: 40,
     flexDirection: "row",
@@ -111,15 +134,18 @@ const styles = StyleSheet.create({
   text: {
     textAlign: "center",
     borderWidth: 0,
+    fontSize: 20,
   },
   habitCheckbox: {
     backgroundColor: "#68a0cf",
-    borderRadius: 5,
+    borderRadius: 8,
     borderWidth: 1,
     borderColor: "#fff",
     width: 25,
     height: 25,
     marginLeft: "auto",
     marginRight: "auto",
+    borderWidth: 1,
+    borderColor: "grey",
   },
 });
