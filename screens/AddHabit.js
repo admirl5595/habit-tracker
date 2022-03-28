@@ -69,11 +69,9 @@ const AddHabit = ({ navigation }) => {
       // store notification id's for new habit (habitId: notificationIds)
       try {
         await AsyncStorage.setItem(res.id, JSON.stringify(notificationIds));
-        console.log("stored value successfully");
       } catch (e) {
         // error
-        console.log("couldn't store in local storage");
-        console.log(e);
+        console.error(e);
       }
     }
 

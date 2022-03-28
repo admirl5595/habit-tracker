@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 5,
   },
   completeBtn: {
-    color: "rgba(2,180,249,1)",
+    color: "rgba(255,255,255, 1)",
     marginHorizontal: 5,
   },
 });
