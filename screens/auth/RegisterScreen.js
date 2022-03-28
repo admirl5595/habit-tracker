@@ -1,13 +1,12 @@
 import {
-  StyleSheet,
+  Keyboard,
   TextInput,
   View,
   TouchableOpacity,
   Text,
   Image,
-  Dimensions,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { auth } from "../../firebase-config";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { StatusBar } from "expo-status-bar";
@@ -21,6 +20,22 @@ export default function RegisterScreen({ navigation }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passwordConfirm, setPasswordConfirm] = useState("");
+
+  // Resize logo when keyboard is open to be able to read all entries
+  const [imageSize, setImageSize] = useState({ width: 230, height: 230 });
+  useEffect(() => {
+    const showSubscription = Keyboard.addListener("keyboardDidShow", () => {
+      setImageSize({ width: 100, height: 100 });
+    });
+    const hideSubscription = Keyboard.addListener("keyboardDidHide", () => {
+      setImageSize({ width: 230, height: 230 });
+    });
+
+    return () => {
+      showSubscription.remove();
+      hideSubscription.remove();
+    };
+  });
 
   const handleRegister = () => {
     createUserWithEmailAndPassword(auth, email, password)
@@ -40,7 +55,6 @@ export default function RegisterScreen({ navigation }) {
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
-        console.log(errorCode);
       });
   };
 
@@ -48,7 +62,12 @@ export default function RegisterScreen({ navigation }) {
     <View style={styles.container}>
       <StatusBar style="auto" />
       <Image
-        style={styles.img}
+        style={{
+          width: imageSize.width,
+          height: imageSize.height,
+          margin: 20,
+          borderRadius: 50,
+        }}
         source={require("../../config/images/app-logo.png")}
       />
       <View style={styles.InputView}>

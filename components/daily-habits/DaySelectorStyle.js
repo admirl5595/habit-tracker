@@ -9,6 +9,8 @@ const styles = StyleSheet.create({
   btn: {
     padding: 7,
     borderRadius: 50,
+    borderWidth:.5,
+
   },
 });
 

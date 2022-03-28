@@ -33,7 +33,7 @@ const DaySelector = ({ selectedDay, setSelectedDay }) => {
 
     // set to red if it is day of week
     if (day === days[dayIndex]) {
-      return { backgroundColor: "red" };
+      return { backgroundColor: "rgba(255, 0, 0, 0.6)" };
     }
 
     // white if neither

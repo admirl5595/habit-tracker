@@ -36,14 +36,11 @@ const HabitItem = ({ item, removeHabit, selectedDay, completeHabit, navigation }
       <TouchableOpacity onPress={() => completeHabit(item.id)}>
         {isCurrentDay ? (
           <FontAwesomeIcon
-            size={30}
+            size={33}
             style={styles.completeBtn}
             icon="circle-check"
           />
         ) : null}
-      </TouchableOpacity>
-      <TouchableOpacity onPress={() => removeHabit(item.id)}>
-        <FontAwesomeIcon style={styles.removeBtn} size={25} icon="trash" />
       </TouchableOpacity>
     </View>
     </TouchableOpacity>

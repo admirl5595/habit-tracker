@@ -1,33 +1,42 @@
 import {
-  StyleSheet,
   TextInput,
   View,
   TouchableOpacity,
   Text,
   Image,
-  Dimensions,
+  Keyboard,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { auth } from "../../firebase-config";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { StatusBar } from "expo-status-bar";
-
 import styles from "./AuthScreensStyle";
 
 export default function LoginScreen({ navigation }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  // Resize logo when keyboard is open to be able to read all entries
+  const [imageSize, setImageSize] = useState({ width: 230, height: 230 });
+  useEffect(() => {
+    const showSubscription = Keyboard.addListener("keyboardDidShow", () => {
+      setImageSize({ width: 100, height: 100 });
+    });
+    const hideSubscription = Keyboard.addListener("keyboardDidHide", () => {
+      setImageSize({ width: 230, height: 230 });
+    });
+
+    return () => {
+      showSubscription.remove();
+      hideSubscription.remove();
+    };
+  });
+
   const handleLogin = () => {
-    signInWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        const user = userCredential.user;
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        console.log(errorCode);
-      });
+    signInWithEmailAndPassword(auth, email, password).catch((error) => {
+      alert("Invalid email or password!");
+      console.log(error.message);
+    });
   };
 
   return (
@@ -35,7 +44,12 @@ export default function LoginScreen({ navigation }) {
       <StatusBar style="auto" />
 
       <Image
-        style={styles.img}
+        style={{
+          width: imageSize.width,
+          height: imageSize.height,
+          margin: 20,
+          borderRadius: 50,
+        }}
         source={require("../../config/images/app-logo.png")}
       />
       <View style={styles.InputView}>
@@ -56,14 +70,14 @@ export default function LoginScreen({ navigation }) {
         />
       </View>
 
-      <TouchableOpacity onPress={handleLogin} style={styles.btn}>
+      <TouchableOpacity onPress={handleLogin} style={styles.loginBtn}>
         <Text>Login</Text>
       </TouchableOpacity>
       <TouchableOpacity
         style={styles.btn}
         onPress={() => navigation.navigate("Register")}
       >
-        <Text style={styles.btnText}>Don't have an account? Login</Text>
+        <Text style={styles.btnText}>Register</Text>
       </TouchableOpacity>
     </View>
   );

@@ -4,10 +4,7 @@ import * as Notifications from "expo-notifications";
 export const notificationSetup = (notificationListener, responseListener) => {
   registerForPushNotificationsAsync();
 
-  Notifications.getAllScheduledNotificationsAsync().then((notifications) => {
-    console.log("scheduled notifications:");
-    console.log(notifications);
-  });
+  Notifications.getAllScheduledNotificationsAsync().then((notifications) => {});
 
   notificationListener.current =
     Notifications.addNotificationReceivedListener();
@@ -89,9 +86,7 @@ export async function editHabitReminders(ids, time) {
     }
   );
 
-  console.log(oldNotifications);
-
-  let notificationIds = []
+  let notificationIds = [];
 
   // cancel the old habits
   await cancelHabitReminders(ids);
@@ -116,11 +111,11 @@ export async function editHabitReminders(ids, time) {
       trigger: trigger,
     });
 
-    notificationIds.push(notificationId)
+    notificationIds.push(notificationId);
   }
 
   // return new list of notification ids for the edited habit
-  return notificationIds
+  return notificationIds;
 }
 
 // get notification access token
@@ -139,7 +134,7 @@ async function registerForPushNotificationsAsync() {
       return;
     }
     token = (await Notifications.getExpoPushTokenAsync()).data;
-    console.log(token);
+    g(token);
   } else {
     alert("Must use physical device for Push Notifications");
   }

@@ -91,8 +91,6 @@ const DailyHabits = ({ navigation }) => {
     const selectedDate = new Date();
     selectedDate.setDate(selectedDate.getDate() - new Date().getDay());
 
-    console.log("start of week: " + selectedDate);
-
     let daysOfWeek = {
       sunday: 0,
       monday: 1,
@@ -105,8 +103,6 @@ const DailyHabits = ({ navigation }) => {
 
     // add number of days since start of week
     selectedDate.setDate(selectedDate.getDate() + daysOfWeek[selectedDay]);
-
-    console.log("selected date: " + selectedDate);
 
     const selectedDateYear = selectedDate.getFullYear();
     const selectedDateMonth = selectedDate.getMonth();
@@ -156,8 +152,7 @@ const DailyHabits = ({ navigation }) => {
 
       cancelHabitReminders(notificationIds);
     } catch (e) {
-      console.log("error occured when fetching local data");
-      console.log(e);
+      console.error(e);
     }
 
     await getHabits();
