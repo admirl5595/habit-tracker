@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   Text,
   Image,
+  Alert,
 } from "react-native";
 import React, { useState, useEffect } from "react";
 import { auth } from "../../firebase-config";
@@ -38,6 +39,12 @@ export default function RegisterScreen({ navigation }) {
   });
 
   const handleRegister = () => {
+    console.log("registering");
+    if (password !== passwordConfirm) {
+      Alert.alert("Failed to confirm password");
+      return;
+    }
+
     createUserWithEmailAndPassword(auth, email, password)
       .then(() => {
         // get user information
@@ -54,7 +61,7 @@ export default function RegisterScreen({ navigation }) {
       })
       .catch((error) => {
         const errorCode = error.code;
-        const errorMessage = error.message;
+        Alert.alert(errorCode);
       });
   };
 
