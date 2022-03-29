@@ -8,7 +8,6 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { TouchableOpacity } from "react-native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 
-
 import LoadingScreen from "./LoadingScreen";
 import AllHabits from "./AllHabits";
 import DailyHabits from "./DailyHabits";
@@ -53,7 +52,7 @@ const ScreenSwitcher = () => {
   );
 
   // listen to user authentication state
-  const [user, loading, error] = useAuthState(auth);
+  const [user, loading] = useAuthState(auth);
 
   return (
     <NavigationContainer>

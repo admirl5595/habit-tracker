@@ -1,6 +1,6 @@
 import React from "react";
 
-import { View, Text, TouchableOpacity } from "react-native";
+import { View, TouchableOpacity } from "react-native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 
 import styles from "../daily-habits/DaySelectorStyle";
@@ -8,9 +8,6 @@ import { primaryColor } from "../../config/theme/styles";
 
 const DaysSelector = ({ selectedDays, setSelectedDays }) => {
   const backgroundColor = primaryColor;
-
-  // monday returns 0 etc.
-  let dayNum = new Date().getDay();
 
   // days of week
   let days = [
