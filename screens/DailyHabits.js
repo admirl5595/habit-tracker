@@ -10,7 +10,6 @@ import {
 
 import styles from "./DailyHabitsStyle";
 
-import { db } from "../firebase-config";
 import {
   collection,
   doc,
@@ -19,6 +18,12 @@ import {
   getDoc,
   updateDoc,
 } from "firebase/firestore";
+
+import {
+  getHabits,
+  removeHabit,
+  completeHabit,
+} from "../config/crud-operations";
 
 import { signOut } from "firebase/auth";
 import { auth } from "../firebase-config";
@@ -31,20 +36,11 @@ import Layout from "./Layout";
 import HabitsContext from "../config/HabitsContext";
 import NoHabits from "../components/daily-habits/NoHabits";
 
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { cancelHabitReminders } from "../config/notifications-config";
-
 const DailyHabits = ({ navigation }) => {
-  // current user
-  const user = auth.currentUser;
-
   const { habits, setHabits } = useContext(HabitsContext);
 
   // each user has a user document has an id (uid)
   // each user also has a habits collection related to them (users/userId/habits)
-
-  // get user's habits collection (users/userId/habits)
-  const userHabitCollectionRef = collection(db, "users", user.uid, "habits");
 
   // monday returns 0 for sunday etc.
   const dayNum = new Date().getDay();
@@ -134,64 +130,13 @@ const DailyHabits = ({ navigation }) => {
     setDisplayHabits(newDisplayHabits);
   };
 
-  // get habit documents
-  const getHabits = async () => {
-    const userHabits = await getDocs(userHabitCollectionRef);
-
-    setHabits(userHabits.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
-
-    setIsLoading(false);
-  };
-
-  // remove habit by id
-  const removeHabit = async (habitId) => {
-    const habitDoc = doc(db, "users", user.uid, "habits", habitId);
-
-    await deleteDoc(habitDoc);
-
-    let notificationIds;
-
-    try {
-      notificationIds = await AsyncStorage.getItem(habitId);
-
-      notificationIds = notificationIds ? JSON.parse(notificationIds) : null;
-
-      cancelHabitReminders(notificationIds);
-    } catch (e) {
-      console.error(e);
-    }
-
-    await getHabits();
-  };
-
-  // complete a habit (only for todays date)
-  const completeHabit = async (id) => {
-    const user = auth.currentUser;
-
-    const habitRef = doc(db, "users", user.uid, "habits", id);
-
-    let habitDoc = await getDoc(habitRef);
-
-    let habit = habitDoc.data();
-
-    // get old completed days array
-    let oldCompletedDays = habit.completedDays;
-
-    // should check if completed days already contains todays date
-
-    // append todays date
-    let newCompletedDays = [...oldCompletedDays, new Date()];
-
-    await updateDoc(habitRef, { completedDays: newCompletedDays });
-    getHabits();
-  };
-
   // filter habits when changing selected day and when habitsdata changes (CRUD)
   useEffect(filterHabits, [selectedDay, habits]);
 
   // get habits from firestore
   useEffect(() => {
-    getHabits();
+    getHabits(setHabits);
+    setIsLoading(false);
   }, []);
 
   return (
@@ -237,10 +182,16 @@ const DailyHabits = ({ navigation }) => {
             renderItem={({ item }) => (
               <HabitItem
                 navigation={navigation}
-                removeHabit={(id) => removeHabit(id)}
+                removeHabit={(id) => {
+                  removeHabit(id);
+                  getHabits(setHabits);
+                }}
                 selectedDay={selectedDay}
                 item={item}
-                completeHabit={(id) => completeHabit(id)}
+                completeHabit={(id) => {
+                  completeHabit(id);
+                  getHabits(setHabits);
+                }}
               />
             )}
           />
