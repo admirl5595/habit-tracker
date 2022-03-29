@@ -1,5 +1,12 @@
 import React, { useEffect, useState, useContext } from "react";
-import { View, Button, FlatList, ActivityIndicator } from "react-native";
+import {
+  View,
+  Button,
+  FlatList,
+  ActivityIndicator,
+  Image,
+  Text,
+} from "react-native";
 
 import styles from "./DailyHabitsStyle";
 
@@ -10,7 +17,6 @@ import {
   getDocs,
   deleteDoc,
   getDoc,
-  addDoc,
   updateDoc,
 } from "firebase/firestore";
 
@@ -210,7 +216,20 @@ const DailyHabits = ({ navigation }) => {
         />
         {isLoading ? <ActivityIndicator size="large" color="#000" /> : null}
         {displayHabits.length === 0 && !isLoading ? (
-          <NoHabits />
+          <>
+            <Image
+              style={{
+                marginTop: 80,
+                width: 250,
+                height: 250,
+                margin: 20,
+                borderRadius: 50,
+              }}
+              source={require("../config/images/app-logo.png")}
+              accessibilityLabel={"Logo of man running"}
+            />
+            <Text>No habits</Text>
+          </>
         ) : (
           <FlatList
             style={{ width: "100%" }}
