@@ -1,9 +1,6 @@
 import React from "react";
 import { View, Text, StyleSheet, ActivityIndicator } from "react-native";
 
-import { onAuthStateChanged } from "firebase/auth";
-import { auth } from "../firebase-config";
-
 import { primaryColor } from "../config/theme/styles";
 
 export default class LoadingScreen extends React.Component {

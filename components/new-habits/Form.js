@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useContext } from "react";
 
 import {
   Text,
@@ -9,19 +9,12 @@ import {
 } from "react-native";
 
 import { theme } from "../../config/theme/styles";
-
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-
 import { primaryColor } from "../../config/theme/styles";
-
 import DaysSelector from "../new-habits/DaysSelector";
-
 import styles from "./FormStyles";
-
 import TimeInput from "./TimeInput";
-
 import { removeHabit, getHabits } from "../../config/crud-operations";
-
 import HabitsContext from "../../config/HabitsContext";
 
 // onSubmit: either create or edit habit
@@ -29,7 +22,6 @@ import HabitsContext from "../../config/HabitsContext";
 
 const Form = ({ onSubmit, habitInfo, navigation }) => {
   const { setHabits } = useContext(HabitsContext);
-
   const [errorMessage, setErrorMessage] = useState("");
 
   // habit name

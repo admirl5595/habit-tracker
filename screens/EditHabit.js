@@ -1,8 +1,6 @@
 import React, { useContext } from "react";
-import { View, Text, Button } from "react-native";
-import Layout from "./Layout";
 import Form from "../components/new-habits/Form";
-import { updateDoc, doc, collection, getDocs } from "firebase/firestore";
+import { updateDoc, doc } from "firebase/firestore";
 import HabitsContext from "../config/HabitsContext";
 
 import { db, auth } from "../firebase-config";
@@ -32,7 +30,6 @@ const EditHabit = ({ route, navigation }) => {
     getHabits(setHabits);
 
     // convert bool list to list of days of week
-
     const days = [
       "monday",
       "tuesday",
@@ -50,7 +47,6 @@ const EditHabit = ({ route, navigation }) => {
 
     // remove null values after mapping
     dayOfWeekStrings = dayOfWeekStrings.filter((value) => value !== null);
-
     let oldNotificationIds = await AsyncStorage.getItem(habit.id);
 
     // send list of old notification ids to edit and new time
