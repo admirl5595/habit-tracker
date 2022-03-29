@@ -41,6 +41,7 @@ import {
   faCaretDown,
   faCaretRight,
   faCaretLeft,
+  faGear,
 } from "@fortawesome/free-solid-svg-icons";
 
 library.add(
@@ -67,7 +68,8 @@ library.add(
   faCaretUp,
   faCaretDown,
   faCaretRight,
-  faCaretLeft
+  faCaretLeft,
+  faGear
 );
 
 import HabitsContext from "./config/HabitsContext";
