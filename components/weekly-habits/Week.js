@@ -4,28 +4,13 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 
 export default function Week() {
-  const lastWeek = () => {
-    return 1;
-  };
-  return (
-    <View style={styles.container}>
-      <View style={styles.iconRow}>
-        <TouchableOpacity onPress={lastWeek} style={styles.arrow}>
-          <FontAwesomeIcon size={30} icon="caret-left" />
-        </TouchableOpacity>
-        <Text style={styles.arrow}>Week</Text>
-        <TouchableOpacity style={styles.arrow}>
-          <FontAwesomeIcon size={30} icon="caret-right" />
-        </TouchableOpacity>
-      </View>
-    </View>
-  );
+
 }
 
 const styles = StyleSheet.create({
-  container: {
+  weekSwitcher: {
     alignItems: "center",
-    alignContent: "center"
+    alignContent: "center",
   },
   iconRow: {
     height: 43,

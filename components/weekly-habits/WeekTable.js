@@ -4,27 +4,15 @@ import { Table, TableWrapper, Cell } from "react-native-table-component";
 import HabitsContext from "../../config/HabitsContext";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 
-export default function WeekTable() {
+export default function WeekTable({ datesInChosenWeek }) {
   const { habits } = useContext(HabitsContext);
   const [daysInWeek, setDaysInWeek] = useState([]);
+
   useEffect(() => {
-    findDaysInWeek();
-  }, []);
+    setDaysInWeek(datesInChosenWeek);
+  }, [datesInChosenWeek]);
 
   const tableHead = ["", "S", "M", "T", "W", "T", "F", "S", "%"];
-
-  // Rename
-  const findDaysInWeek = () => {
-    const today = new Date();
-    let daysOfWeek = [];
-    const sunday = new Date(today.setDate(today.getDate() - today.getDay()));
-    for (let i = 0; i < 7; i++) {
-      daysOfWeek.push(
-        new Date(today.setDate(today.getDate() - today.getDay() + i))
-      );
-    }
-    setDaysInWeek(daysOfWeek);
-  };
 
   const isDayCompleted = (cDays, day, numCDays) => {
     // Refactor
@@ -34,9 +22,8 @@ export default function WeekTable() {
         " " +
         day.toDate().getMonth().toString()
     );
-    const d = day.getDate().toString() + " " + day.getMonth().toString();
 
-    if (cdString.includes(d)) {
+    if (cdString.includes(day)) {
       numCDays[0] += 1;
       return true;
     } else return false;
@@ -84,13 +71,15 @@ export default function WeekTable() {
             }
             borderStyle={{ borderWidth: 2, borderColor: "rgba(0,0,0,0.1)" }}
           />
-          {daysInWeek.map((day, cellIndex) =>
-            displayCell({ cDays, day }, numCDays, rowIndex, props)
+
+          {daysInWeek.map((day) =>
+            displayCell({ cDays, day }, numCDays, props)
           )}
+
           <Cell
             key={"percentage " + rowIndex}
             data={Math.ceil((numCDays / 7) * 100)}
-            textStyle={styles.text}
+            textStyle={[styles.text, { fontSize: 14 }]}
             borderStyle={{ borderWidth: 2, borderColor: "rgba(0,0,0,0.1)" }}
           />
         </TableWrapper>
@@ -99,7 +88,7 @@ export default function WeekTable() {
   };
 
   // Edit props and parameters
-  const displayCell = (props, numCDays, rowIndex, habit) => {
+  const displayCell = (props, numCDays, habit) => {
     const backGroundColor = {
       backgroundColor: habit.color,
     };
@@ -107,7 +96,6 @@ export default function WeekTable() {
     return (
       <Cell
         textStyle={styles.text}
-        key={rowIndex + props.day.getDate()}
         // Add custom color
         data={
           <View
@@ -124,6 +112,7 @@ export default function WeekTable() {
 
   return (
     <View style={styles.container}>
+      {console.log("From WeekTable: " + daysInWeek)}
       <Table borderStyle={{ borderWidth: 2, borderColor: "rgba(0,0,0,0.1)" }}>
         {/* Top row */}
         <TableWrapper style={[styles.row, { height: 50 }]}>
