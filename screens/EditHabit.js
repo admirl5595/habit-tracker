@@ -43,6 +43,9 @@ const EditHabit = ({ route, navigation }) => {
     dayOfWeekStrings = dayOfWeekStrings.filter((value) => value !== null);
     let oldNotificationIds = await AsyncStorage.getItem(habit.id);
 
+    // turn string into list
+    oldNotificationIds = JSON.parse(oldNotificationIds);
+
     // send list of old notification ids to edit and new time
     // return new array of notification ids
     const notificationIds = await editHabitReminders(
