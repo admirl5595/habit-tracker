@@ -26,7 +26,7 @@ const ScreenSwitcher = () => {
   const options = ({ navigation }) => ({
     headerRight: () => (
       <TouchableOpacity onPress={() => navigation.navigate("Settings")}>
-        <FontAwesomeIcon size={20} icon={"gear"} color={"rgba(0,0,0,0.5)"}/>
+        <FontAwesomeIcon size={20} icon={"gear"} color={"rgba(0,0,0,0.5)"} />
       </TouchableOpacity>
     ),
   });
@@ -41,7 +41,7 @@ const ScreenSwitcher = () => {
       <Stack.Screen options={options} name="AllHabits" component={AllHabits} />
       <Stack.Screen options={options} name="AddHabit" component={AddHabit} />
       <Stack.Screen options={options} name="EditHabit" component={EditHabit} />
-      <Stack.Screen options={options} name="Settings" component={Settings} />
+      <Stack.Screen name="Settings" component={Settings} />
     </>
   );
   const AuthScreens = (

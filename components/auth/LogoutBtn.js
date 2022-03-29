@@ -1,9 +1,8 @@
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
-import React from 'react'
+import React from "react";
 import { primaryColor } from "../../config/theme/styles";
 import { signOut } from "firebase/auth";
 import { auth } from "../../firebase-config";
-
 
 export default function LogoutBtn() {
   return (
@@ -22,7 +21,7 @@ export default function LogoutBtn() {
         }
         style={styles.logoutBtn}
       >
-        <Text>Log Out</Text>
+        <Text style={styles.text}>Log Out</Text>
       </TouchableOpacity>
     </View>
   );
@@ -34,11 +33,13 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     alignItems: "center",
     justifyContent: "center",
-    marginTop: 10,
     padding: 10,
-    marginBottom: 10,
-    borderWidth: 1,
     backgroundColor: primaryColor,
     borderColor: "grey",
+  },
+  text: {
+    fontSize: 20,
+    color: "#fff",
+    fontWeight: "bold",
   },
 });
