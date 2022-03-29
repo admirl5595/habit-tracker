@@ -1,11 +1,8 @@
 import React from 'react'
-
-import {StyleSheet, View, Text, TouchableOpacity} from 'react-native'
-
+import {StyleSheet, View, TouchableOpacity} from 'react-native'
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
-import { backgroundColor } from 'react-native/Libraries/Components/View/ReactNativeStyleAttributes'
-
 import {primaryColor} from '../config/theme/styles'
+
 // clock: daily habits
 // calendar: all habits 
 export default function Navbar({navigation}) {

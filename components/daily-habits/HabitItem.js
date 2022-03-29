@@ -1,12 +1,9 @@
 import React from "react";
-
 import { Text, View, TouchableOpacity } from "react-native";
-
 import styles from "./HabitItemStyle";
-
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 
-const HabitItem = ({ item, removeHabit, selectedDay, completeHabit, navigation }) => {
+const HabitItem = ({ item, selectedDay, completeHabit, navigation }) => {
   let daysOfWeek = [
     "sunday",
     "monday",
@@ -44,8 +41,6 @@ const HabitItem = ({ item, removeHabit, selectedDay, completeHabit, navigation }
       </TouchableOpacity>
     </View>
     </TouchableOpacity>
-
-    
   );
 };
 

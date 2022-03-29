@@ -5,7 +5,7 @@ import { NavigationContainer } from "@react-navigation/native";
 
 import { useAuthState } from "react-firebase-hooks/auth";
 
-import { Button, Text, TouchableOpacity } from "react-native";
+import { Text, TouchableOpacity } from "react-native";
 
 import LoadingScreen from "./LoadingScreen";
 import AllHabits from "./AllHabits";
@@ -57,7 +57,7 @@ const ScreenSwitcher = () => {
   );
 
   // listen to user authentication state
-  const [user, loading, error] = useAuthState(auth);
+  const [user, loading] = useAuthState(auth);
 
   return (
     <NavigationContainer>
