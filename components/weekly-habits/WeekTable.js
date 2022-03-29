@@ -46,6 +46,7 @@ export default function WeekTable() {
   const displayHead = (item, index) => {
     return (
       <Cell
+        key={index}
         data={
           <View style={index !== 0 ? styles.tableHead : null}>
             <Text style={styles.text}>{item}</Text>
@@ -68,7 +69,7 @@ export default function WeekTable() {
 
     return (
       <>
-        <TableWrapper style={styles.row}>
+        <TableWrapper key={rowIndex} style={styles.row}>
           <Cell
             textStyle={styles.text}
             key={"icon " + rowIndex}
@@ -125,7 +126,7 @@ export default function WeekTable() {
     <View style={styles.container}>
       <Table borderStyle={{ borderWidth: 2, borderColor: "rgba(0,0,0,0.1)" }}>
         {/* Top row */}
-        <TableWrapper style={[styles.row, { height: 50}]}>
+        <TableWrapper style={[styles.row, { height: 50 }]}>
           {tableHead.map((item, index) => displayHead(item, index))}
         </TableWrapper>
         {/* Display habits in table */}
