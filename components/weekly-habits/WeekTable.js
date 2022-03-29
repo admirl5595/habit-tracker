@@ -43,25 +43,15 @@ export default function WeekTable() {
   };
 
   // Edit props and parameters
-  const displayCell = (props, numCDays, rowIndex, habit) => {
-    const backGroundColor = {
-      backgroundColor: habit.color,
-    };
-
+  const displayHead = (item, index) => {
     return (
       <Cell
-        textStyle={styles.text}
-        key={rowIndex + props.day.getDate()}
-        // Add custom color
         data={
-          <View
-            opacity={
-              isDayCompleted(props.cDays, props.day, numCDays) ? 0.9 : 0.1
-            }
-            style={[styles.habitCheckbox, backGroundColor]}
-          ></View>
+          <View style={index !== 0 ? styles.tableHead : null}>
+            <Text style={styles.text}>{item}</Text>
+          </View>
         }
-        borderStyle={{ borderWidth: 1, borderColor: "#000" }}
+        borderStyle={{ borderWidth: 2, borderColor: "rgba(0,0,0,0.1)" }}
       />
     );
   };
@@ -91,7 +81,7 @@ export default function WeekTable() {
                 />
               </>
             }
-            borderStyle={{ borderWidth: 1, borderColor: "#000" }}
+            borderStyle={{ borderWidth: 2, borderColor: "rgba(0,0,0,0.1)" }}
           />
           {daysInWeek.map((day, cellIndex) =>
             displayCell({ cDays, day }, numCDays, rowIndex, props)
@@ -100,17 +90,45 @@ export default function WeekTable() {
             key={"percentage " + rowIndex}
             data={Math.ceil((numCDays / 7) * 100)}
             textStyle={styles.text}
-            borderStyle={{ borderWidth: 1, borderColor: "#000" }}
+            borderStyle={{ borderWidth: 2, borderColor: "rgba(0,0,0,0.1)" }}
           />
         </TableWrapper>
       </>
     );
   };
 
+  // Edit props and parameters
+  const displayCell = (props, numCDays, rowIndex, habit) => {
+    const backGroundColor = {
+      backgroundColor: habit.color,
+    };
+
+    return (
+      <Cell
+        textStyle={styles.text}
+        key={rowIndex + props.day.getDate()}
+        // Add custom color
+        data={
+          <View
+            opacity={
+              isDayCompleted(props.cDays, props.day, numCDays) ? 0.9 : 0.1
+            }
+            style={[styles.habitCheckbox, backGroundColor]}
+          ></View>
+        }
+        borderStyle={{ borderWidth: 2, borderColor: "rgba(0,0,0,0.1)" }}
+      />
+    );
+  };
+
   return (
     <View style={styles.container}>
-      <Table borderStyle={{ borderWidth: 1 }}>
-        <Row data={tableHead} style={styles.head} textStyle={styles.text} />
+      <Table borderStyle={{ borderWidth: 2, borderColor: "rgba(0,0,0,0.1)" }}>
+        {/* Top row */}
+        <TableWrapper style={[styles.row, { height: 50}]}>
+          {tableHead.map((item, index) => displayHead(item, index))}
+        </TableWrapper>
+        {/* Display habits in table */}
         {habits.map((habit, rowIndex) => displayRow(habit, rowIndex))}
       </Table>
     </View>
@@ -123,12 +141,16 @@ const styles = StyleSheet.create({
     padding: 16,
     paddingTop: 30,
   },
-  head: { height: 40, backgroundColor: "#f1f8ff" },
-  wrapper: { flexDirection: "row" },
+  tableHead: {
+    backgroundColor: "rgba(255, 178, 166, 0.6)",
+    borderRadius: 100,
+    height: 35,
+    justifyContent: "center",
+  },
   title: { backgroundColor: "#f6f8fa" },
   icon: { marginLeft: "auto", marginRight: "auto" },
   row: {
-    height: 40,
+    height: 45,
     flexDirection: "row",
   },
   text: {
