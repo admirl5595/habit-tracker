@@ -1,9 +1,7 @@
 import React, { useContext } from "react";
 import Form from "../components/new-habits/Form";
-import { updateDoc, doc } from "firebase/firestore";
 import HabitsContext from "../config/HabitsContext";
-
-import { db, auth } from "../firebase-config";
+import { updateHabit } from "../config/crud-operations";
 import { editHabitReminders } from "../config/notifications-config";
 
 import { getHabits } from "../config/crud-operations";
@@ -11,23 +9,19 @@ import { getHabits } from "../config/crud-operations";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const EditHabit = ({ route, navigation }) => {
-  const user = auth.currentUser;
-
   const { habit } = route.params;
 
   // data and function from context
   const { setHabits } = useContext(HabitsContext);
 
   const editHabit = async (updatedHabitInfo) => {
-    // update name, dayOfWeek, color and time for this habit (keep completed)
-    const updatedHabitFields = { ...updatedHabitInfo };
+    await updateHabit(updatedHabitInfo, habit).catch((e) => {
+      // couldn't edit
+      navigation.navigate("DailyHabits");
+      return;
+    });
 
-    const habitDoc = doc(db, "users", user.uid, "habits", habit.id);
-
-    // adds document to user's habit collection (autoId)
-    await updateDoc(habitDoc, updatedHabitFields);
-
-    getHabits(setHabits);
+    await getHabits(setHabits);
 
     // convert bool list to list of days of week
     const days = [
@@ -49,11 +43,14 @@ const EditHabit = ({ route, navigation }) => {
     dayOfWeekStrings = dayOfWeekStrings.filter((value) => value !== null);
     let oldNotificationIds = await AsyncStorage.getItem(habit.id);
 
+    // turn string into list
+    oldNotificationIds = JSON.parse(oldNotificationIds);
+
     // send list of old notification ids to edit and new time
     // return new array of notification ids
     const notificationIds = await editHabitReminders(
       oldNotificationIds,
-      updatedHabitFields.time
+      updatedHabitInfo.time
     );
 
     // store notification id's for new habit (habitId: notificationIds)

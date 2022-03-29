@@ -33,6 +33,7 @@ export default function WeekTable({ datesInChosenWeek }) {
   const displayHead = (item, index) => {
     return (
       <Cell
+        key={index}
         data={
           <View style={index !== 0 ? styles.tableHead : null}>
             <Text style={styles.text}>{item}</Text>
@@ -55,7 +56,7 @@ export default function WeekTable({ datesInChosenWeek }) {
 
     return (
       <>
-        <TableWrapper style={styles.row}>
+        <TableWrapper key={rowIndex} style={styles.row}>
           <Cell
             textStyle={styles.text}
             key={"icon " + rowIndex}
