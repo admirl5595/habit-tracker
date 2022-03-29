@@ -12,15 +12,6 @@ import {
 import styles from "./DailyHabitsStyle";
 
 import {
-  collection,
-  doc,
-  getDocs,
-  deleteDoc,
-  getDoc,
-  updateDoc,
-} from "firebase/firestore";
-
-import {
   getHabits,
   removeHabit,
   completeHabit,
@@ -28,21 +19,15 @@ import {
 
 import { signOut } from "firebase/auth";
 import { auth } from "../firebase-config";
-
 import HabitItem from "../components/daily-habits/HabitItem";
 import DaySelector from "../components/daily-habits/DaySelector";
-
 import Layout from "./Layout";
-
 import HabitsContext from "../config/HabitsContext";
-import NoHabits from "../components/daily-habits/NoHabits";
 
 const DailyHabits = ({ navigation }) => {
   const { habits, setHabits } = useContext(HabitsContext);
-
   // each user has a user document has an id (uid)
   // each user also has a habits collection related to them (users/userId/habits)
-
   // monday returns 0 for sunday etc.
   const dayNum = new Date().getDay();
   let days = {
@@ -57,7 +42,6 @@ const DailyHabits = ({ navigation }) => {
 
   // set day string using corresponding day number
   const [selectedDay, setSelectedDay] = useState(days[dayNum]);
-
   const [isLoading, setIsLoading] = useState(true);
 
   // habits filtered by day selector
@@ -89,7 +73,6 @@ const DailyHabits = ({ navigation }) => {
     );
 
     // remove habits that are already completed for the selected day
-
     // set start of week date
     const selectedDate = new Date();
     selectedDate.setDate(selectedDate.getDate() - new Date().getDay());

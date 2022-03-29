@@ -24,7 +24,6 @@ const EditHabit = ({ route, navigation }) => {
     await getHabits(setHabits);
 
     // convert bool list to list of days of week
-
     const days = [
       "monday",
       "tuesday",
@@ -42,7 +41,6 @@ const EditHabit = ({ route, navigation }) => {
 
     // remove null values after mapping
     dayOfWeekStrings = dayOfWeekStrings.filter((value) => value !== null);
-
     let oldNotificationIds = await AsyncStorage.getItem(habit.id);
 
     // send list of old notification ids to edit and new time

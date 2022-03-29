@@ -1,6 +1,6 @@
 import { View, Text, StyleSheet } from "react-native";
 import React, { useContext, useEffect, useState } from "react";
-import { Table, TableWrapper, Row, Cell } from "react-native-table-component";
+import { Table, TableWrapper, Cell } from "react-native-table-component";
 import HabitsContext from "../../config/HabitsContext";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 
