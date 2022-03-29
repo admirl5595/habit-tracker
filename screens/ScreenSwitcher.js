@@ -5,7 +5,9 @@ import { NavigationContainer } from "@react-navigation/native";
 
 import { useAuthState } from "react-firebase-hooks/auth";
 
-import { Button, Text, TouchableOpacity } from "react-native";
+import { TouchableOpacity } from "react-native";
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+
 
 import LoadingScreen from "./LoadingScreen";
 import AllHabits from "./AllHabits";
@@ -25,7 +27,7 @@ const ScreenSwitcher = () => {
   const options = ({ navigation }) => ({
     headerRight: () => (
       <TouchableOpacity onPress={() => navigation.navigate("Settings")}>
-        <Text>Settings</Text>
+        <FontAwesomeIcon size={20} icon={"gear"} color={"rgba(0,0,0,0.5)"}/>
       </TouchableOpacity>
     ),
   });
@@ -33,13 +35,7 @@ const ScreenSwitcher = () => {
   const AppScreens = (
     <>
       <Stack.Screen
-        options={({ navigation }) => ({
-          headerRight: () => (
-            <TouchableOpacity onPress={() => navigation.navigate("Settings")}>
-              <Text>Settings</Text>
-            </TouchableOpacity>
-          ),
-        })}
+        options={options}
         name="DailyHabits"
         component={DailyHabits}
       />
