@@ -5,7 +5,7 @@ export default function SwitchWeek() {
     
   return (
     <View>
-      <TouchableOpacity onPress={handleRegister} style={styles.btn}>
+      <TouchableOpacity onPress={handleRegister} style={styles.btn}/>
     </View>
   )
 }
