@@ -1,42 +1,22 @@
 import React, { useContext } from "react";
-import { View, Text, Button } from "react-native";
 import Layout from "./Layout";
 import Form from "../components/new-habits/Form";
-import { addDoc, collection, getDocs } from "firebase/firestore";
 import HabitsContext from "../config/HabitsContext";
-
-import { db, auth } from "../firebase-config";
 import { scheduleHabitReminders } from "../config/notifications-config";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-import { getHabits } from "../config/crud-operations";
+import { getHabits, createHabit } from "../config/crud-operations";
 
 const AddHabit = ({ navigation }) => {
-  const user = auth.currentUser;
-
   // data and function from context
-  const { habits, setHabits } = useContext(HabitsContext);
-
-  // get user's habits collection (users/userId/habits)
-  const userHabitCollectionRef = collection(db, "users", user.uid, "habits");
+  const { setHabits } = useContext(HabitsContext);
 
   const addHabit = async (newHabitInfo) => {
-    // add key value pairs to the new habit and declare completed days array (list of dates)
-    const newHabit = { ...newHabitInfo, completedDays: [] };
-
-    // adds document to user's habit collection (autoId)
-    const res = await addDoc(userHabitCollectionRef, newHabit);
+    const res = await createHabit(newHabitInfo);
 
     // add habit to context with id from firebase response
     if (res) {
-      const userHabitCollectionRef = collection(
-        db,
-        "users",
-        user.uid,
-        "habits"
-      );
-
       getHabits(setHabits);
 
       // convert bool list to list of days of week

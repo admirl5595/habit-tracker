@@ -6,6 +6,7 @@ import {
   ActivityIndicator,
   Image,
   Text,
+  Alert,
 } from "react-native";
 
 import styles from "./DailyHabitsStyle";
@@ -146,19 +147,6 @@ const DailyHabits = ({ navigation }) => {
         setSelectedDay={(day) => setSelectedDay(day)}
       />
       <View style={styles.container}>
-        <Button
-          title="Log out"
-          onPress={() =>
-            signOut(auth)
-              .then(() => {
-                /* Sign-out successful */
-                setHabits(null); // clear context
-              })
-              .catch((error) => {
-                // An error happened
-              })
-          }
-        />
         {isLoading ? <ActivityIndicator size="large" color="#000" /> : null}
         {displayHabits.length === 0 && !isLoading ? (
           <>

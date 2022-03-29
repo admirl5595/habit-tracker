@@ -1,11 +1,7 @@
 import React, { useContext } from "react";
-import { View, Text, Button } from "react-native";
-import Layout from "./Layout";
 import Form from "../components/new-habits/Form";
-import { updateDoc, doc, collection, getDocs } from "firebase/firestore";
 import HabitsContext from "../config/HabitsContext";
-
-import { db, auth } from "../firebase-config";
+import { updateHabit } from "../config/crud-operations";
 import { editHabitReminders } from "../config/notifications-config";
 
 import { getHabits } from "../config/crud-operations";
@@ -13,23 +9,19 @@ import { getHabits } from "../config/crud-operations";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const EditHabit = ({ route, navigation }) => {
-  const user = auth.currentUser;
-
   const { habit } = route.params;
 
   // data and function from context
   const { setHabits } = useContext(HabitsContext);
 
   const editHabit = async (updatedHabitInfo) => {
-    // update name, dayOfWeek, color and time for this habit (keep completed)
-    const updatedHabitFields = { ...updatedHabitInfo };
+    await updateHabit(updatedHabitInfo, habit).catch((e) => {
+      // couldn't edit
+      navigation.navigate("DailyHabits");
+      return;
+    });
 
-    const habitDoc = doc(db, "users", user.uid, "habits", habit.id);
-
-    // adds document to user's habit collection (autoId)
-    await updateDoc(habitDoc, updatedHabitFields);
-
-    getHabits(setHabits);
+    await getHabits(setHabits);
 
     // convert bool list to list of days of week
 
@@ -57,7 +49,7 @@ const EditHabit = ({ route, navigation }) => {
     // return new array of notification ids
     const notificationIds = await editHabitReminders(
       oldNotificationIds,
-      updatedHabitFields.time
+      updatedHabitInfo.time
     );
 
     // store notification id's for new habit (habitId: notificationIds)
